@@ -1,8 +1,8 @@
 module Main exposing (main)
 
 import Browser
-import Html exposing (Attribute, Html, div, text)
-import Html.Attributes as HtmlA
+import Html exposing (Attribute, Html, a, div, text)
+import Html.Attributes as HtmlA exposing (class, href)
 import Html.Events exposing (onClick)
 import Projects exposing (..)
 import Table exposing (defaultCustomizations)
@@ -77,25 +77,111 @@ tableConfig =
         , toMsg = SetTableState
         , columns =
             [ --checkboxColumn
-              Table.stringColumn "Name" (Tuple.second >> .name)
-            , Table.stringColumn "Link" (Tuple.second >> .link)
+              infoColumn
+
+            -- , Table.stringColumn "Name" (Tuple.second >> .name)
+            -- , Table.stringColumn "Link" (Tuple.second >> .link)
             , Table.stringColumn "Contributor Levels" (Tuple.second >> .contributorLevel)
-            , Table.stringColumn "Rating" (Tuple.second >> .contact)
-            , Table.stringColumn "Rating" (Tuple.second >> .description)
+            , Table.stringColumn "Contact" (Tuple.second >> .contact)
+
+            -- , Table.stringColumn "Description" (Tuple.second >> .description)
             ]
         , customizations =
-            { defaultCustomizations | rowAttrs = toRowAttrs }
+            { defaultCustomizations
+                | tableAttrs = [ class "projects" ]
+                , thead = simpleThead
+                , rowAttrs = toRowAttrs
+            }
         }
 
 
 toRowAttrs : ( Bool, Project ) -> List (Attribute Msg)
 toRowAttrs ( sel, p ) =
-    [ onClick (ToggleSelected p.name)
-    , HtmlA.style "background"
+    [ HtmlA.style "background"
         (if sel then
-            "#CEFAF8"
+            "#ffee3a"
 
          else
             "white"
         )
     ]
+
+
+infoColumn : Table.Column ( Bool, Project ) Msg
+infoColumn =
+    Table.veryCustomColumn
+        { name = "Name"
+        , viewData = viewInfo
+        , sorter = Table.increasingOrDecreasingBy (Tuple.second >> .name)
+        }
+
+
+viewInfo : ( Bool, Project ) -> Table.HtmlDetails Msg
+viewInfo ( sel, p ) =
+    let
+        iconFile =
+            if sel then
+                "bookmark-solid.svg"
+
+            else
+                "bookmark-regular.svg"
+    in
+    Table.HtmlDetails
+        []
+        [ Html.img
+            [ HtmlA.src iconFile
+            , onClick (ToggleSelected p.name)
+            , HtmlA.class "clickable bookmark"
+            ]
+            []
+        , a [ class "name", href p.link ] [ text p.name ]
+
+        -- , Html.br [] []
+        -- , text p.link
+        , Html.br [] []
+        , text p.description
+        ]
+
+
+simpleThead : List ( String, Table.Status, Attribute msg ) -> Table.HtmlDetails msg
+simpleThead headers =
+    Table.HtmlDetails [] (List.map simpleTheadHelp headers)
+
+
+simpleTheadHelp : ( String, Table.Status, Attribute msg ) -> Html msg
+simpleTheadHelp ( name, status, click ) =
+    let
+        title =
+            Html.strong [] [ text name ]
+
+        content =
+            case status of
+                Table.Unsortable ->
+                    [ title ]
+
+                Table.Sortable selected ->
+                    [ if selected then
+                        text "⇗ "
+
+                      else
+                        text "⇗ "
+                    , title
+                    ]
+
+                Table.Reversible Nothing ->
+                    [ text "⇕ "
+                    , title
+                    ]
+
+                Table.Reversible (Just isReversed) ->
+                    [ text
+                        (if isReversed then
+                            "⇘ "
+
+                         else
+                            "⇗ "
+                        )
+                    , title
+                    ]
+    in
+    Html.th [ click, class "clickable" ] content
