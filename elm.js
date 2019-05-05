@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.Q.C === region.X.C)
+	if (region.Q.B === region.X.B)
 	{
-		return 'on line ' + region.Q.C;
+		return 'on line ' + region.Q.B;
 	}
-	return 'on lines ' + region.Q.C + ' through ' + region.X.C;
+	return 'on lines ' + region.Q.B + ' through ' + region.X.B;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aS,
-		impl.aM,
+		impl.aF,
+		impl.aT,
+		impl.aN,
 		function() { return function() {} }
 	);
 });
@@ -3883,11 +3883,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aS,
-		impl.aM,
+		impl.aF,
+		impl.aT,
+		impl.aN,
 		function(sendToApp, initialModel) {
-			var view = impl.aU;
+			var view = impl.aV;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3919,12 +3919,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aS,
-		impl.aM,
+		impl.aF,
+		impl.aT,
+		impl.aN,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.E && impl.E(sendToApp)
-			var view = impl.aU;
+			var divertHrefToApp = impl.D && impl.D(sendToApp)
+			var view = impl.aV;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3932,12 +3932,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.at);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aP) && (_VirtualDom_doc.title = title = doc.aP);
+				(title !== doc.aQ) && (_VirtualDom_doc.title = title = doc.aQ);
 			});
 		}
 	);
@@ -3993,12 +3993,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aG;
-	var onUrlRequest = impl.aH;
+	var onUrlChange = impl.aH;
+	var onUrlRequest = impl.aI;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		E: function(sendToApp)
+		D: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4014,9 +4014,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ai === next.ai
+							&& curr.aj === next.aj
 							&& curr._ === next._
-							&& curr.af.a === next.af.a
+							&& curr.ag.a === next.ag.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4024,13 +4024,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aE: function(flags)
+		aF: function(flags)
 		{
-			return A3(impl.aE, flags, _Browser_getUrl(), key);
+			return A3(impl.aF, flags, _Browser_getUrl(), key);
 		},
-		aU: impl.aU,
-		aS: impl.aS,
-		aM: impl.aM
+		aV: impl.aV,
+		aT: impl.aT,
+		aN: impl.aN
 	});
 }
 
@@ -4096,17 +4096,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aC: 'hidden', at: 'visibilitychange' }
+		? { aD: 'hidden', au: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aC: 'mozHidden', at: 'mozvisibilitychange' }
+		? { aD: 'mozHidden', au: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aC: 'msHidden', at: 'msvisibilitychange' }
+		? { aD: 'msHidden', au: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aC: 'webkitHidden', at: 'webkitvisibilitychange' }
-		: { aC: 'hidden', at: 'visibilitychange' };
+		? { aD: 'webkitHidden', au: 'webkitvisibilitychange' }
+		: { aD: 'hidden', au: 'visibilitychange' };
 }
 
 
@@ -4187,11 +4187,11 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		am: _Browser_getScene(),
-		ap: {
+		an: _Browser_getScene(),
+		aq: {
 			K: _Browser_window.pageXOffset,
 			L: _Browser_window.pageYOffset,
-			y: _Browser_doc.documentElement.clientWidth,
+			x: _Browser_doc.documentElement.clientWidth,
 			s: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4202,7 +4202,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		y: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		x: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		s: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4226,14 +4226,14 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			am: {
-				y: node.scrollWidth,
+			an: {
+				x: node.scrollWidth,
 				s: node.scrollHeight
 			},
-			ap: {
+			aq: {
 				K: node.scrollLeft,
 				L: node.scrollTop,
-				y: node.clientWidth,
+				x: node.clientWidth,
 				s: node.clientHeight
 			}
 		};
@@ -4264,17 +4264,17 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			am: _Browser_getScene(),
-			ap: {
+			an: _Browser_getScene(),
+			aq: {
 				K: x,
 				L: y,
-				y: _Browser_doc.documentElement.clientWidth,
+				x: _Browser_doc.documentElement.clientWidth,
 				s: _Browser_doc.documentElement.clientHeight
 			},
-			az: {
+			aA: {
 				K: x + rect.left,
 				L: y + rect.top,
-				y: rect.width,
+				x: rect.width,
 				s: rect.height
 			}
 		};
@@ -4392,46 +4392,46 @@ var elm$core$Set$toList = function (_n0) {
 };
 var author$project$Projects$projects = _List_fromArray(
 	[
-		{av: 'Bodigrim', aw: 'Beginner, Intermediate, Advanced', ay: 'arithmoi is a Haskell library for number theory: modular arithmetic, primes, elliptic curves, etc. It is also an excellent tool for Project Euler.', aF: 'https://github.com/cartazio/arithmoi', t: 'arithmoi'},
-		{av: 'Shao Cheng', aw: 'Advanced', ay: 'A Haskell to WebAssembly compiler.', aF: 'https://github.com/tweag/asterius', t: 'Asterius'},
-		{av: 'Silvio Böhler', aw: 'Beginner, Intermediate, Advanced', ay: 'An accounting tool inspired by beancount and ledger.', aF: 'https://github.com/sboehler/beans', t: 'beans'},
-		{av: 'Mikhail Glushenkov', aw: 'Intermediate, Advanced', ay: 'Cabal is a system for building and packaging Haskell libraries and programs.', aF: 'https://haskell.org/cabal', t: 'Cabal'},
-		{av: 'Ganesh Sittampalam', aw: 'Intermediate, Advanced', ay: 'The darcs version control system.', aF: 'https://darcs.net', t: 'Darcs'},
-		{av: 'ocramz', aw: 'Beginner, Intermediate, Advanced', ay: 'Figuring out a native library and API for data science in Haskell.', aF: 'https://github.com/DataHaskell/dh-core', t: 'DataHaskell core'},
-		{av: 'Arian van Putten', aw: 'Beginner', ay: 'Dhall k8s is a library for working with k8s in dhall. It currently generates dhall code from swagger spec using python. However I wanna port it to Haskell so I can use the Dhall AST directly instead of strings.', aF: 'https://github.com/dhall-lang/dhall-kubernetes', t: 'Dhall Kubernetes'},
-		{av: 'dim1tri', aw: 'Beginner, Intermediate', ay: 'Haskell API to communicate with vehicles over MAVLink.', aF: 'https://github.com/dim1tri/dronekit-haskell', t: 'Dronekit'},
-		{av: 'Peter Trommler', aw: 'Intermediate', ay: 'Implement dynamic linking on Linux to match features of the RTS linker.', aF: 'https://ghc.haskell.org/trac/ghc/ticket/11238', t: 'Dynamic Linking in GHC'},
-		{av: 'Manu Gupta', aw: 'Intermediate, Advanced', ay: 'Enabling the bottom of pyramid through EHR and Radiology services on the cloud using open source spreadsheet powered by Glasgow Haskell Compiler on AWS and Google Cloud, Open Source Picture Archiving and Communications System and PyDICOM, Ethereum Blockchain Network. EHR as a service aims at providing secure data storage, transparent data movement and data authenticity along with early detection and prevention of diseases.', aF: 'https://sites.google.com/view/electronichealthrecords/home', t: 'Electronic Health Records Management as a Service'},
-		{av: 'Akii', aw: 'Beginner, Intermediate', ay: 'Elevator and escalator disruption analysis.', aF: 'https://elescore.de', t: 'Elescore'},
-		{av: 'Ninjatrappeur', aw: 'Beginner, Intermediate, Advanced', ay: 'Example-based Haskell Documentation', aF: 'https://github.com/NinjaTrappeur/ex-hack', t: 'Ex-Hack'},
-		{av: 'Manu Gupta', aw: 'Beginner, Intermediate', ay: 'We wish to extend and adapt octave (open source version of matlab) using Glasgow Haskell Compiler and Open Source spreadsheet namely Ethercalc. This will enable students and researchers to actively use Matlab for a variety of high performance and super computing applications in the fields of Physics, Chemistry, Biology and Mathematics.', aF: 'https://seeta.in', t: 'Extending and Adapting Octave using Glasgow Haskell Compiler and Open Source Spreadsheet'},
-		{av: 'Yuriy Syrovetskiy', aw: 'Intermediate', ay: 'Task tracker and note taker.', aF: 'https://github.com/ff-notes', t: 'ff'},
-		{av: 'Tobias Dammers', aw: 'Beginner, Intermediate, Advanced', ay: 'A pure Haskell implementation of the Jinja2 HTML template language.', aF: 'https://ginger.tobiasdammers.nl/', t: 'Ginger'},
-		{av: 'Robert Klotzner', aw: 'Intermediate, Advanced', ay: 'Web based baby monitor', aF: 'https://gonimo.com', t: 'Gonimo'},
-		{av: 'Peter Podlovics', aw: 'Intermediate, Advanced', ay: 'GRIN is short for Graph Reduction Intermediate Notation, a modern back end for lazy functional languages. Most of the currently available compilers for such languages share a common flaw: they can only optimize programs on a per-module basis. The GRIN framework allows for interprocedural whole program analysis, enabling optimizing code transformations across functions and modules as well.', aF: 'https://github.com/grin-tech/grin', t: 'GRIN'},
-		{av: 'Sofía Cordero', aw: 'Beginner', ay: 'Learning methodology for Haskell', aF: 'https://haskellmad.github.io/haskellnautas/articulos/2018-05-31-haskell-con-katas-introduccion-a-codewars/', t: 'Haskell Katas'},
-		{av: 'winterland1989', aw: 'Intermediate, Advanced', ay: 'IO toolkit based on libuv for GHC', aF: 'https://github.com/orgs/haskell-stdio', t: 'haskell-stdio'},
-		{av: 'John Wiegley', aw: 'Intermediate, Advanced', ay: 'An implementation of the Nix language in Haskell', aF: 'https://github.com/haskell-nix/hnix', t: 'hnix'},
-		{av: 'Manu Gupta', aw: 'Intermediate, Advanced', ay: 'Enabling the Bottom of Pyramid through Water Management Services on the Cloud build using Reflex FRP framework, Water Quality Tools, Open Source Spreadsheet with Haskell server stack and Picture Archiving and Communication System. Remote Water Monitoring, Sewage Management, Quality Assurance and Recyclability of Water using a software stack build with Glasgow Haskell Compiler.', aF: 'https://sites.google.com/view/integratedwatermanagment/home', t: 'Integrated Water Management Resource Center'},
-		{av: 'Christopher Goes', aw: 'Advanced', ay: 'Haskell/Idris to Michelson/WASM smart contract compiler (work in progress).', aF: 'https://github.com/cwgoes/juvix', t: 'Juvix'},
-		{av: 'Alexey Kuleshevich', aw: 'Beginner, Intermediate, Advanced', ay: 'Efficient Haskell Arrays featuring Parallel computation.', aF: 'https://github.com/lehins/massiv', t: 'massiv'},
-		{av: 'Neil Mitchell', aw: 'Intermediate, Advanced', ay: 'Shake build system.', aF: 'https://shakebuild.com', t: 'Shake'},
-		{av: 'angerman', aw: 'Beginner, Intermediate, Advanced', ay: 'A better haskell infrastructure for nix', aF: 'https://github.com/angerman/nix-tools', t: 'nix-tools'},
-		{av: 'ludat', aw: 'Intermediate', ay: 'I\'d like to build a haskell config library along the lines of Java\'s spring-config.', aF: '', t: '(no name)'},
-		{av: 'Mark Karpov', aw: 'Intermediate, Advanced', ay: 'A new formatter for Haskell source code.', aF: '', t: 'Ormolu'},
-		{av: 'Mauro Bieg', aw: 'Beginner, Intermediate, Advanced', ay: 'Universal document converter', aF: 'http://pandoc.org', t: 'pandoc'},
-		{av: 'Wolfgang Jeltsch', aw: 'Advanced', ay: 'Pomelo is a new FRP library, whose development is just starting. Key goals for Pomelo are a clean semantics and an efficient implementation.', aF: 'https://temporal-pomelo.com/', t: 'Pomelo'},
-		{av: 'Tiphaine LAURENT', aw: 'Beginner', ay: 'Piffomètre Programming Paradigm.', aF: 'http://PPP.pfff', t: 'PPP'},
-		{av: 'Ru Horlick', aw: 'Intermediate', ay: 'A UI based website builder using Reflex and GHCJS. Down with WordPress!', aF: '', t: 'Reflex Site Builder'},
-		{av: 'Tommaso Piazza', aw: 'Intermediate', ay: 'Remote cache for binary artifacts.', aF: 'https://github.com/blender/Rome', t: 'Rome'},
-		{av: 'Alp', aw: 'Beginner, Intermediate, Advanced', ay: 'A library for writing web applications, deriving clients and more.', aF: 'https://haskell-servant.github.io/', t: 'servant'},
-		{av: 'Mr Kerckhove', aw: 'Beginner, Intermediate', ay: 'A purely functional semantic forest editor to replace Emacs\' Org Mode.', aF: 'https://smos.cs-syd.eu', t: 'Smos'},
-		{av: 'Nicolas Mattia', aw: 'Advanced', ay: 'Nix-based incremental build tool for Haskell projects.', aF: 'https://github.com/nmattia/snack/', t: 'snack'},
-		{av: 'Fabrizio Ferrai', aw: 'Beginner, Intermediate', ay: 'PureScript package manager and build tool powered by Dhall and Spacchetti.', aF: 'https://github.com/spacchetti/spago', t: 'spago'},
-		{av: 'Auke Booij', aw: 'Intermediate, Advanced', ay: 'Haskell implementation of the wayland protocol.', aF: 'https://github.com/abooij/sudbury', t: 'sudbury'},
-		{av: 'Adrian Sieber', aw: 'Intermediate', ay: 'CLI task / todo manager built with Haskell and SQLite', aF: 'https://github.com/ad-si/tasklite', t: 'TaskLite'},
-		{av: 'Csaba Hruska', aw: 'Advanced', ay: 'GRIN is a compiler back-end for lazy and strict functional languages with whole program optimization support.', aF: 'https://github.com/grin-tech/grin', t: 'The GRIN Compiler'},
-		{av: 'Ben Brunzel', aw: 'Beginner, Intermediate, Advanced', ay: 'traze is a MQTT based tronlike multiplayer game with a Gameserver implementation in Haskell.', aF: 'https://github.com/iteratec/traze-gameserver', t: 'traze'}
+		{aw: 'Bodigrim', ax: 'Beginner, Intermediate, Advanced', az: 'arithmoi is a Haskell library for number theory: modular arithmetic, primes, elliptic curves, etc. It is also an excellent tool for Project Euler.', aa: 0, aG: 'https://github.com/cartazio/arithmoi', I: 'arithmoi'},
+		{aw: 'Shao Cheng', ax: 'Advanced', az: 'A Haskell to WebAssembly compiler.', aa: 1, aG: 'https://github.com/tweag/asterius', I: 'Asterius'},
+		{aw: 'Silvio Böhler', ax: 'Beginner, Intermediate, Advanced', az: 'An accounting tool inspired by beancount and ledger.', aa: 2, aG: 'https://github.com/sboehler/beans', I: 'beans'},
+		{aw: 'Mikhail Glushenkov', ax: 'Intermediate, Advanced', az: 'Cabal is a system for building and packaging Haskell libraries and programs.', aa: 3, aG: 'https://haskell.org/cabal', I: 'Cabal'},
+		{aw: 'Ganesh Sittampalam', ax: 'Intermediate, Advanced', az: 'The darcs version control system.', aa: 4, aG: 'https://darcs.net', I: 'Darcs'},
+		{aw: 'ocramz', ax: 'Beginner, Intermediate, Advanced', az: 'Figuring out a native library and API for data science in Haskell.', aa: 5, aG: 'https://github.com/DataHaskell/dh-core', I: 'DataHaskell core'},
+		{aw: 'Arian van Putten', ax: 'Beginner', az: 'Dhall k8s is a library for working with k8s in dhall. It currently generates dhall code from swagger spec using python. However I wanna port it to Haskell so I can use the Dhall AST directly instead of strings.', aa: 6, aG: 'https://github.com/dhall-lang/dhall-kubernetes', I: 'Dhall Kubernetes'},
+		{aw: 'dim1tri', ax: 'Beginner, Intermediate', az: 'Haskell API to communicate with vehicles over MAVLink.', aa: 7, aG: 'https://github.com/dim1tri/dronekit-haskell', I: 'Dronekit'},
+		{aw: 'Peter Trommler', ax: 'Intermediate', az: 'Implement dynamic linking on Linux to match features of the RTS linker.', aa: 8, aG: 'https://ghc.haskell.org/trac/ghc/ticket/11238', I: 'Dynamic Linking in GHC'},
+		{aw: 'Manu Gupta', ax: 'Intermediate, Advanced', az: 'Enabling the bottom of pyramid through EHR and Radiology services on the cloud using open source spreadsheet powered by Glasgow Haskell Compiler on AWS and Google Cloud, Open Source Picture Archiving and Communications System and PyDICOM, Ethereum Blockchain Network. EHR as a service aims at providing secure data storage, transparent data movement and data authenticity along with early detection and prevention of diseases.', aa: 9, aG: 'https://sites.google.com/view/electronichealthrecords/home', I: 'Electronic Health Records Management as a Service'},
+		{aw: 'Akii', ax: 'Beginner, Intermediate', az: 'Elevator and escalator disruption analysis.', aa: 10, aG: 'https://elescore.de', I: 'Elescore'},
+		{aw: 'Ninjatrappeur', ax: 'Beginner, Intermediate, Advanced', az: 'Example-based Haskell Documentation', aa: 11, aG: 'https://github.com/NinjaTrappeur/ex-hack', I: 'Ex-Hack'},
+		{aw: 'Manu Gupta', ax: 'Beginner, Intermediate', az: 'We wish to extend and adapt octave (open source version of matlab) using Glasgow Haskell Compiler and Open Source spreadsheet namely Ethercalc. This will enable students and researchers to actively use Matlab for a variety of high performance and super computing applications in the fields of Physics, Chemistry, Biology and Mathematics.', aa: 12, aG: 'https://seeta.in', I: 'Extending and Adapting Octave using Glasgow Haskell Compiler and Open Source Spreadsheet'},
+		{aw: 'Yuriy Syrovetskiy', ax: 'Intermediate', az: 'Task tracker and note taker.', aa: 13, aG: 'https://github.com/ff-notes', I: 'ff'},
+		{aw: 'Tobias Dammers', ax: 'Beginner, Intermediate, Advanced', az: 'A pure Haskell implementation of the Jinja2 HTML template language.', aa: 14, aG: 'https://ginger.tobiasdammers.nl/', I: 'Ginger'},
+		{aw: 'Robert Klotzner', ax: 'Intermediate, Advanced', az: 'Web based baby monitor', aa: 15, aG: 'https://gonimo.com', I: 'Gonimo'},
+		{aw: 'Peter Podlovics', ax: 'Intermediate, Advanced', az: 'GRIN is short for Graph Reduction Intermediate Notation, a modern back end for lazy functional languages. Most of the currently available compilers for such languages share a common flaw: they can only optimize programs on a per-module basis. The GRIN framework allows for interprocedural whole program analysis, enabling optimizing code transformations across functions and modules as well.', aa: 16, aG: 'https://github.com/grin-tech/grin', I: 'GRIN'},
+		{aw: 'Sofía Cordero', ax: 'Beginner', az: 'Learning methodology for Haskell', aa: 17, aG: 'https://haskellmad.github.io/haskellnautas/articulos/2018-05-31-haskell-con-katas-introduccion-a-codewars/', I: 'Haskell Katas'},
+		{aw: 'winterland1989', ax: 'Intermediate, Advanced', az: 'IO toolkit based on libuv for GHC', aa: 18, aG: 'https://github.com/orgs/haskell-stdio', I: 'haskell-stdio'},
+		{aw: 'John Wiegley', ax: 'Intermediate, Advanced', az: 'An implementation of the Nix language in Haskell', aa: 19, aG: 'https://github.com/haskell-nix/hnix', I: 'hnix'},
+		{aw: 'Manu Gupta', ax: 'Intermediate, Advanced', az: 'Enabling the Bottom of Pyramid through Water Management Services on the Cloud build using Reflex FRP framework, Water Quality Tools, Open Source Spreadsheet with Haskell server stack and Picture Archiving and Communication System. Remote Water Monitoring, Sewage Management, Quality Assurance and Recyclability of Water using a software stack build with Glasgow Haskell Compiler.', aa: 20, aG: 'https://sites.google.com/view/integratedwatermanagment/home', I: 'Integrated Water Management Resource Center'},
+		{aw: 'Christopher Goes', ax: 'Advanced', az: 'Haskell/Idris to Michelson/WASM smart contract compiler (work in progress).', aa: 21, aG: 'https://github.com/cwgoes/juvix', I: 'Juvix'},
+		{aw: 'Alexey Kuleshevich', ax: 'Beginner, Intermediate, Advanced', az: 'Efficient Haskell Arrays featuring Parallel computation.', aa: 22, aG: 'https://github.com/lehins/massiv', I: 'massiv'},
+		{aw: 'Neil Mitchell', ax: 'Intermediate, Advanced', az: 'Shake build system.', aa: 23, aG: 'https://shakebuild.com', I: 'Shake'},
+		{aw: 'angerman', ax: 'Beginner, Intermediate, Advanced', az: 'A better haskell infrastructure for nix', aa: 24, aG: 'https://github.com/angerman/nix-tools', I: 'nix-tools'},
+		{aw: 'ludat', ax: 'Intermediate', az: 'I\'d like to build a haskell config library along the lines of Java\'s spring-config.', aa: 25, aG: '', I: '(no name)'},
+		{aw: 'Mark Karpov', ax: 'Intermediate, Advanced', az: 'A new formatter for Haskell source code.', aa: 26, aG: '', I: 'Ormolu'},
+		{aw: 'Mauro Bieg', ax: 'Beginner, Intermediate, Advanced', az: 'Universal document converter', aa: 27, aG: 'http://pandoc.org', I: 'pandoc'},
+		{aw: 'Wolfgang Jeltsch', ax: 'Advanced', az: 'Pomelo is a new FRP library, whose development is just starting. Key goals for Pomelo are a clean semantics and an efficient implementation.', aa: 28, aG: 'https://temporal-pomelo.com/', I: 'Pomelo'},
+		{aw: 'Tiphaine LAURENT', ax: 'Beginner', az: 'Piffomètre Programming Paradigm.', aa: 29, aG: 'http://PPP.pfff', I: 'PPP'},
+		{aw: 'Ru Horlick', ax: 'Intermediate', az: 'A UI based website builder using Reflex and GHCJS. Down with WordPress!', aa: 30, aG: '', I: 'Reflex Site Builder'},
+		{aw: 'Tommaso Piazza', ax: 'Intermediate', az: 'Remote cache for binary artifacts.', aa: 31, aG: 'https://github.com/blender/Rome', I: 'Rome'},
+		{aw: 'Alp', ax: 'Beginner, Intermediate, Advanced', az: 'A library for writing web applications, deriving clients and more.', aa: 32, aG: 'https://haskell-servant.github.io/', I: 'servant'},
+		{aw: 'Mr Kerckhove', ax: 'Beginner, Intermediate', az: 'A purely functional semantic forest editor to replace Emacs\' Org Mode.', aa: 33, aG: 'https://smos.cs-syd.eu', I: 'Smos'},
+		{aw: 'Nicolas Mattia', ax: 'Advanced', az: 'Nix-based incremental build tool for Haskell projects.', aa: 34, aG: 'https://github.com/nmattia/snack/', I: 'snack'},
+		{aw: 'Fabrizio Ferrai', ax: 'Beginner, Intermediate', az: 'PureScript package manager and build tool powered by Dhall and Spacchetti.', aa: 35, aG: 'https://github.com/spacchetti/spago', I: 'spago'},
+		{aw: 'Auke Booij', ax: 'Intermediate, Advanced', az: 'Haskell implementation of the wayland protocol.', aa: 36, aG: 'https://github.com/abooij/sudbury', I: 'sudbury'},
+		{aw: 'Adrian Sieber', ax: 'Intermediate', az: 'CLI task / todo manager built with Haskell and SQLite', aa: 37, aG: 'https://github.com/ad-si/tasklite', I: 'TaskLite'},
+		{aw: 'Csaba Hruska', ax: 'Advanced', az: 'GRIN is a compiler back-end for lazy and strict functional languages with whole program optimization support.', aa: 38, aG: 'https://github.com/grin-tech/grin', I: 'The GRIN Compiler'},
+		{aw: 'Ben Brunzel', ax: 'Beginner, Intermediate, Advanced', az: 'traze is a MQTT based tronlike multiplayer game with a Gameserver implementation in Haskell.', aa: 39, aG: 'https://github.com/iteratec/traze-gameserver', I: 'traze'}
 	]);
 var billstclair$elm_sortable_table$Table$State = F2(
 	function (a, b) {
@@ -4908,7 +4908,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Main$init = function () {
 	var model = {
-		D: A2(
+		C: A2(
 			elm$core$List$map,
 			function (p) {
 				return _Utils_Tuple2(false, p);
@@ -4920,23 +4920,23 @@ var author$project$Main$init = function () {
 }();
 var elm$core$Basics$not = _Basics_not;
 var author$project$Main$toggle = F2(
-	function (name, _n0) {
+	function (id, _n0) {
 		var sel = _n0.a;
 		var p = _n0.b;
-		return _Utils_eq(p.t, name) ? _Utils_Tuple2(!sel, p) : _Utils_Tuple2(sel, p);
+		return _Utils_eq(p.aa, id) ? _Utils_Tuple2(!sel, p) : _Utils_Tuple2(sel, p);
 	});
 var author$project$Main$update = F2(
 	function (msg, model) {
 		if (!msg.$) {
-			var name = msg.a;
+			var id = msg.a;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						D: A2(
+						C: A2(
 							elm$core$List$map,
-							author$project$Main$toggle(name),
-							model.D)
+							author$project$Main$toggle(id),
+							model.C)
 					}),
 				elm$core$Platform$Cmd$none);
 		} else {
@@ -4956,7 +4956,7 @@ var author$project$Main$ToggleSelected = function (a) {
 };
 var billstclair$elm_sortable_table$Table$HtmlDetails = F2(
 	function (attributes, children) {
-		return {A: attributes, B: children};
+		return {z: attributes, A: children};
 	});
 var elm$core$Basics$identity = function (x) {
 	return x;
@@ -5034,7 +5034,7 @@ var author$project$Main$viewInfo = function (_n0) {
 					[
 						elm$html$Html$Attributes$src(iconFile),
 						elm$html$Html$Events$onClick(
-						author$project$Main$ToggleSelected(p.t)),
+						author$project$Main$ToggleSelected(p.aa)),
 						elm$html$Html$Attributes$class('clickable bookmark')
 					]),
 				_List_Nil),
@@ -5043,18 +5043,18 @@ var author$project$Main$viewInfo = function (_n0) {
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$class('name'),
-						elm$html$Html$Attributes$href(p.aF)
+						elm$html$Html$Attributes$href(p.aG)
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text(p.t)
+						elm$html$Html$text(p.I)
 					])),
 				A2(
 				elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text(p.ay)
+						elm$html$Html$text(p.az)
 					]))
 			]));
 };
@@ -5079,15 +5079,15 @@ var elm$core$Tuple$second = function (_n0) {
 };
 var author$project$Main$infoColumn = billstclair$elm_sortable_table$Table$veryCustomColumn(
 	{
-		t: 'Name',
-		aL: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(
+		I: 'Name',
+		aM: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(
 			A2(
 				elm$core$Basics$composeR,
 				elm$core$Tuple$second,
 				function ($) {
-					return $.t;
+					return $.I;
 				})),
-		aV: author$project$Main$viewInfo
+		aW: author$project$Main$viewInfo
 	});
 var elm$html$Html$th = _VirtualDom_node('th');
 var author$project$Main$simpleTheadHelp = function (_n0) {
@@ -5152,21 +5152,21 @@ var author$project$Main$toRowAttrs = function (_n0) {
 };
 var billstclair$elm_sortable_table$Table$Config = elm$core$Basics$identity;
 var billstclair$elm_sortable_table$Table$customConfig = function (_n0) {
-	var toId = _n0.aQ;
-	var toMsg = _n0.aR;
-	var columns = _n0.au;
-	var customizations = _n0.ax;
+	var toId = _n0.aR;
+	var toMsg = _n0.aS;
+	var columns = _n0.av;
+	var customizations = _n0.ay;
 	return {
-		au: A2(
+		av: A2(
 			elm$core$List$map,
 			function (_n1) {
 				var cData = _n1;
 				return cData;
 			},
 			columns),
-		ax: customizations,
-		aQ: toId,
-		aR: toMsg
+		ay: customizations,
+		aR: toId,
+		aS: toMsg
 	};
 };
 var billstclair$elm_sortable_table$Table$simpleRowAttrs = function (_n0) {
@@ -5257,7 +5257,7 @@ var billstclair$elm_sortable_table$Table$simpleThead = function (headers) {
 		_List_Nil,
 		A2(elm$core$List$map, billstclair$elm_sortable_table$Table$simpleTheadHelp, headers));
 };
-var billstclair$elm_sortable_table$Table$defaultCustomizations = {M: elm$core$Maybe$Nothing, aK: billstclair$elm_sortable_table$Table$simpleRowAttrs, aN: _List_Nil, S: _List_Nil, T: elm$core$Maybe$Nothing, aO: billstclair$elm_sortable_table$Table$simpleThead};
+var billstclair$elm_sortable_table$Table$defaultCustomizations = {M: elm$core$Maybe$Nothing, aL: billstclair$elm_sortable_table$Table$simpleRowAttrs, aO: _List_Nil, S: _List_Nil, T: elm$core$Maybe$Nothing, aP: billstclair$elm_sortable_table$Table$simpleThead};
 var billstclair$elm_sortable_table$Table$textDetails = function (str) {
 	return A2(
 		billstclair$elm_sortable_table$Table$HtmlDetails,
@@ -5275,14 +5275,14 @@ var elm$core$Basics$composeL = F3(
 var billstclair$elm_sortable_table$Table$stringColumn = F2(
 	function (name, toStr) {
 		return {
-			t: name,
-			aL: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(toStr),
-			aV: A2(elm$core$Basics$composeL, billstclair$elm_sortable_table$Table$textDetails, toStr)
+			I: name,
+			aM: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(toStr),
+			aW: A2(elm$core$Basics$composeL, billstclair$elm_sortable_table$Table$textDetails, toStr)
 		};
 	});
 var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$customConfig(
 	{
-		au: _List_fromArray(
+		av: _List_fromArray(
 			[
 				author$project$Main$infoColumn,
 				A2(
@@ -5292,7 +5292,7 @@ var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$custo
 					elm$core$Basics$composeR,
 					elm$core$Tuple$second,
 					function ($) {
-						return $.aw;
+						return $.ax;
 					})),
 				A2(
 				billstclair$elm_sortable_table$Table$stringColumn,
@@ -5301,26 +5301,26 @@ var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$custo
 					elm$core$Basics$composeR,
 					elm$core$Tuple$second,
 					function ($) {
-						return $.av;
+						return $.aw;
 					}))
 			]),
-		ax: _Utils_update(
+		ay: _Utils_update(
 			billstclair$elm_sortable_table$Table$defaultCustomizations,
 			{
-				aK: author$project$Main$toRowAttrs,
-				aN: _List_fromArray(
+				aL: author$project$Main$toRowAttrs,
+				aO: _List_fromArray(
 					[
 						elm$html$Html$Attributes$class('projects')
 					]),
-				aO: author$project$Main$simpleThead
+				aP: author$project$Main$simpleThead
 			}),
-		aQ: A2(
+		aR: A2(
 			elm$core$Basics$composeR,
 			elm$core$Tuple$second,
 			function ($) {
-				return $.t;
+				return $.I;
 			}),
-		aR: author$project$Main$SetTableState
+		aS: author$project$Main$SetTableState
 	});
 var billstclair$elm_sortable_table$Table$applySorter = F3(
 	function (isReversed, sorter, data) {
@@ -5351,8 +5351,8 @@ var billstclair$elm_sortable_table$Table$findSorter = F2(
 			if (!columnData.b) {
 				return elm$core$Maybe$Nothing;
 			} else {
-				var name = columnData.a.t;
-				var sorter = columnData.a.aL;
+				var name = columnData.a.I;
+				var sorter = columnData.a.aM;
 				var remainingColumnData = columnData.b;
 				if (_Utils_eq(name, selectedColumn)) {
 					return elm$core$Maybe$Just(sorter);
@@ -5380,10 +5380,10 @@ var billstclair$elm_sortable_table$Table$sort = F3(
 	});
 var billstclair$elm_sortable_table$Table$getSortedData = F3(
 	function (_n0, state, data) {
-		var toId = _n0.aQ;
-		var toMsg = _n0.aR;
-		var columns = _n0.au;
-		var customizations = _n0.ax;
+		var toId = _n0.aR;
+		var toMsg = _n0.aS;
+		var columns = _n0.av;
+		var customizations = _n0.ay;
 		return A3(billstclair$elm_sortable_table$Table$sort, state, columns, data);
 	});
 var billstclair$elm_sortable_table$Table$Reversible = function (a) {
@@ -5412,8 +5412,8 @@ var billstclair$elm_sortable_table$Table$toHeaderInfo = F3(
 	function (_n0, toMsg, _n1) {
 		var sortName = _n0.a;
 		var isReversed = _n0.b;
-		var name = _n1.t;
-		var sorter = _n1.aL;
+		var name = _n1.I;
+		var sorter = _n1.aM;
 		switch (sorter.$) {
 			case 0:
 				return _Utils_Tuple3(
@@ -5455,9 +5455,9 @@ var billstclair$elm_sortable_table$Table$toHeaderInfo = F3(
 var elm$html$Html$td = _VirtualDom_node('td');
 var billstclair$elm_sortable_table$Table$viewCell = F2(
 	function (data, _n0) {
-		var viewData = _n0.aV;
+		var viewData = _n0.aW;
 		var details = viewData(data);
-		return A2(elm$html$Html$td, details.A, details.B);
+		return A2(elm$html$Html$td, details.z, details.A);
 	});
 var elm$html$Html$tr = _VirtualDom_node('tr');
 var billstclair$elm_sortable_table$Table$viewRowHelp = F3(
@@ -5489,21 +5489,21 @@ var elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 var elm$html$Html$Keyed$node = elm$virtual_dom$VirtualDom$keyedNode;
 var billstclair$elm_sortable_table$Table$view = F3(
 	function (conf, state, data) {
-		var toId = conf.aQ;
-		var toMsg = conf.aR;
-		var columns = conf.au;
-		var customizations = conf.ax;
-		var theadDetails = customizations.aO(
+		var toId = conf.aR;
+		var toMsg = conf.aS;
+		var columns = conf.av;
+		var customizations = conf.ay;
+		var theadDetails = customizations.aP(
 			A2(
 				elm$core$List$map,
 				A2(billstclair$elm_sortable_table$Table$toHeaderInfo, state, toMsg),
 				columns));
 		var thead = A2(
 			elm$html$Html$thead,
-			theadDetails.A,
+			theadDetails.z,
 			_List_fromArray(
 				[
-					A2(elm$html$Html$tr, _List_Nil, theadDetails.B)
+					A2(elm$html$Html$tr, _List_Nil, theadDetails.A)
 				]));
 		var sortedData = A3(billstclair$elm_sortable_table$Table$getSortedData, conf, state, data);
 		var tbody = A3(
@@ -5512,15 +5512,15 @@ var billstclair$elm_sortable_table$Table$view = F3(
 			customizations.S,
 			A2(
 				elm$core$List$map,
-				A3(billstclair$elm_sortable_table$Table$viewRow, toId, columns, customizations.aK),
+				A3(billstclair$elm_sortable_table$Table$viewRow, toId, columns, customizations.aL),
 				sortedData));
 		var withFoot = function () {
 			var _n1 = customizations.T;
 			if (_n1.$ === 1) {
 				return A2(elm$core$List$cons, tbody, _List_Nil);
 			} else {
-				var attributes = _n1.a.A;
-				var children = _n1.a.B;
+				var attributes = _n1.a.z;
+				var children = _n1.a.A;
 				return A2(
 					elm$core$List$cons,
 					A2(elm$html$Html$tfoot, attributes, children),
@@ -5529,14 +5529,14 @@ var billstclair$elm_sortable_table$Table$view = F3(
 		}();
 		return A2(
 			elm$html$Html$table,
-			customizations.aN,
+			customizations.aO,
 			function () {
 				var _n0 = customizations.M;
 				if (_n0.$ === 1) {
 					return A2(elm$core$List$cons, thead, withFoot);
 				} else {
-					var attributes = _n0.a.A;
-					var children = _n0.a.B;
+					var attributes = _n0.a.z;
+					var children = _n0.a.A;
 					return A2(
 						elm$core$List$cons,
 						A2(elm$html$Html$caption, attributes, children),
@@ -5547,7 +5547,7 @@ var billstclair$elm_sortable_table$Table$view = F3(
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var author$project$Main$view = function (_n0) {
-	var projects = _n0.D;
+	var projects = _n0.C;
 	var tableState = _n0.J;
 	return A2(
 		elm$html$Html$div,
@@ -5680,7 +5680,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Z: fragment, _: host, ad: path, af: port_, ai: protocol, aj: query};
+		return {Z: fragment, _: host, ae: path, ag: port_, aj: protocol, ak: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5789,14 +5789,14 @@ var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$main = elm$browser$Browser$element(
 	{
-		aE: function (_n0) {
+		aF: function (_n0) {
 			return author$project$Main$init;
 		},
-		aM: function (_n1) {
+		aN: function (_n1) {
 			return elm$core$Platform$Sub$none;
 		},
-		aS: author$project$Main$update,
-		aU: author$project$Main$view
+		aT: author$project$Main$update,
+		aV: author$project$Main$view
 	});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(0))(0)}});}(this));

@@ -35,15 +35,15 @@ init =
 
 
 type Msg
-    = ToggleSelected String
+    = ToggleSelected Int
     | SetTableState Table.State
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ToggleSelected name ->
-            ( { model | projects = List.map (toggle name) model.projects }
+        ToggleSelected id ->
+            ( { model | projects = List.map (toggle id) model.projects }
             , Cmd.none
             )
 
@@ -53,9 +53,9 @@ update msg model =
             )
 
 
-toggle : String -> ( Bool, Project ) -> ( Bool, Project )
-toggle name ( sel, p ) =
-    if p.name == name then
+toggle : Int -> ( Bool, Project ) -> ( Bool, Project )
+toggle id ( sel, p ) =
+    if p.id == id then
         ( not sel, p )
 
     else
@@ -76,15 +76,9 @@ tableConfig =
         { toId = Tuple.second >> .name
         , toMsg = SetTableState
         , columns =
-            [ --checkboxColumn
-              infoColumn
-
-            -- , Table.stringColumn "Name" (Tuple.second >> .name)
-            -- , Table.stringColumn "Link" (Tuple.second >> .link)
+            [ infoColumn
             , Table.stringColumn "Level" (Tuple.second >> .contributorLevel)
             , Table.stringColumn "Contact" (Tuple.second >> .contact)
-
-            -- , Table.stringColumn "Description" (Tuple.second >> .description)
             ]
         , customizations =
             { defaultCustomizations
@@ -130,7 +124,7 @@ viewInfo ( sel, p ) =
         []
         [ Html.img
             [ HtmlA.src iconFile
-            , onClick (ToggleSelected p.name)
+            , onClick (ToggleSelected p.id)
             , HtmlA.class "clickable bookmark"
             ]
             []
