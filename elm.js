@@ -4977,8 +4977,8 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	}
 };
 var elm$html$Html$a = _VirtualDom_node('a');
-var elm$html$Html$br = _VirtualDom_node('br');
 var elm$html$Html$img = _VirtualDom_node('img');
+var elm$html$Html$p = _VirtualDom_node('p');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$json$Json$Encode$string = _Json_wrap;
@@ -5049,8 +5049,13 @@ var author$project$Main$viewInfo = function (_n0) {
 					[
 						elm$html$Html$text(p.t)
 					])),
-				A2(elm$html$Html$br, _List_Nil, _List_Nil),
-				elm$html$Html$text(p.ay)
+				A2(
+				elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text(p.ay)
+					]))
 			]));
 };
 var billstclair$elm_sortable_table$Table$IncOrDec = function (a) {
@@ -5084,19 +5089,12 @@ var author$project$Main$infoColumn = billstclair$elm_sortable_table$Table$veryCu
 				})),
 		aV: author$project$Main$viewInfo
 	});
-var elm$html$Html$strong = _VirtualDom_node('strong');
 var elm$html$Html$th = _VirtualDom_node('th');
 var author$project$Main$simpleTheadHelp = function (_n0) {
 	var name = _n0.a;
 	var status = _n0.b;
 	var click = _n0.c;
-	var title = A2(
-		elm$html$Html$strong,
-		_List_Nil,
-		_List_fromArray(
-			[
-				elm$html$Html$text(name)
-			]));
+	var title = elm$html$Html$text(name);
 	var content = function () {
 		switch (status.$) {
 			case 0:
@@ -5106,24 +5104,24 @@ var author$project$Main$simpleTheadHelp = function (_n0) {
 				var selected = status.a;
 				return _List_fromArray(
 					[
-						selected ? elm$html$Html$text('⇗ ') : elm$html$Html$text('⇗ '),
-						title
+						title,
+						selected ? elm$html$Html$text(' ⇗ ') : elm$html$Html$text(' ⇗ ')
 					]);
 			default:
 				if (status.a.$ === 1) {
 					var _n2 = status.a;
 					return _List_fromArray(
 						[
-							elm$html$Html$text('⇕ '),
-							title
+							title,
+							elm$html$Html$text(' ⇕ ')
 						]);
 				} else {
 					var isReversed = status.a.a;
 					return _List_fromArray(
 						[
+							title,
 							elm$html$Html$text(
-							isReversed ? '⇘ ' : '⇗ '),
-							title
+							isReversed ? ' ⇘ ' : ' ⇗ ')
 						]);
 				}
 		}
@@ -5289,7 +5287,7 @@ var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$custo
 				author$project$Main$infoColumn,
 				A2(
 				billstclair$elm_sortable_table$Table$stringColumn,
-				'Contributor Levels',
+				'Level',
 				A2(
 					elm$core$Basics$composeR,
 					elm$core$Tuple$second,

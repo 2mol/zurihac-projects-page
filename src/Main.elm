@@ -81,7 +81,7 @@ tableConfig =
 
             -- , Table.stringColumn "Name" (Tuple.second >> .name)
             -- , Table.stringColumn "Link" (Tuple.second >> .link)
-            , Table.stringColumn "Contributor Levels" (Tuple.second >> .contributorLevel)
+            , Table.stringColumn "Level" (Tuple.second >> .contributorLevel)
             , Table.stringColumn "Contact" (Tuple.second >> .contact)
 
             -- , Table.stringColumn "Description" (Tuple.second >> .description)
@@ -138,8 +138,7 @@ viewInfo ( sel, p ) =
 
         -- , Html.br [] []
         -- , text p.link
-        , Html.br [] []
-        , text p.description
+        , Html.p [] [ text p.description ]
         ]
 
 
@@ -152,7 +151,7 @@ simpleTheadHelp : ( String, Table.Status, Attribute msg ) -> Html msg
 simpleTheadHelp ( name, status, click ) =
     let
         title =
-            Html.strong [] [ text name ]
+            text name
 
         content =
             case status of
@@ -160,28 +159,28 @@ simpleTheadHelp ( name, status, click ) =
                     [ title ]
 
                 Table.Sortable selected ->
-                    [ if selected then
-                        text "⇗ "
+                    [ title
+                    , if selected then
+                        text " ⇗ "
 
                       else
-                        text "⇗ "
-                    , title
+                        text " ⇗ "
                     ]
 
                 Table.Reversible Nothing ->
-                    [ text "⇕ "
-                    , title
+                    [ title
+                    , text " ⇕ "
                     ]
 
                 Table.Reversible (Just isReversed) ->
-                    [ text
+                    [ title
+                    , text
                         (if isReversed then
-                            "⇘ "
+                            " ⇘ "
 
                          else
-                            "⇗ "
+                            " ⇗ "
                         )
-                    , title
                     ]
     in
     Html.th [ click, class "clickable" ] content

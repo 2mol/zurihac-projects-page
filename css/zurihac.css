@@ -356,9 +356,10 @@ footer {
 }
 
 .projects .name {
-  color:#258bcd;
-  font-weight:bold;
+  color: #258bcd;
+  font-weight: bold;
   font-size: 20px;
+  /* margin-bottom: 2.5em; */
 }
 
 .projects p {
@@ -370,10 +371,15 @@ footer {
 }
 
 .projects tr:nth-child(even) {
-  background: #e1e5e7;
+  background: #e9f3f8;
 }
 
-.projects th { white-space: nowrap; }
+.projects th {
+  background: #258bcd;
+  color: white;
+  white-space: nowrap;
+  font-size: 20px;
+}
 
 .projects th, td {
   vertical-align: top;
