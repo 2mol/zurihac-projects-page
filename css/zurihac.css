@@ -365,21 +365,30 @@ footer {
   margin: 6px 0px 6px 0px;
 }
 
-.projects table {
-  border: 1px solid #CCC;
+.projects {
   border-collapse: collapse;
+}
+
+.projects tr:nth-child(even) {
+  background: #e1e5e7;
 }
 
 .projects th { white-space: nowrap; }
 
 .projects th, td {
-  /* vertical-align: top; */
+  vertical-align: top;
   text-align: left;
+  padding: 0.5em;
+  border-top: 2px solid white;
 }
 
 .bookmark {
   height: 0.9em;
   padding-right: 0.3em;
+}
+
+.selected {
+  background: #ffee3a !important;
 }
 
 .clickable {

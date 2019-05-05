@@ -97,12 +97,12 @@ tableConfig =
 
 toRowAttrs : ( Bool, Project ) -> List (Attribute Msg)
 toRowAttrs ( sel, p ) =
-    [ HtmlA.style "background"
+    [ class
         (if sel then
-            "#ffee3a"
+            "selected"
 
          else
-            "white"
+            ""
         )
     ]
 

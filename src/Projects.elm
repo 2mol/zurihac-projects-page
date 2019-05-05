@@ -214,7 +214,7 @@ projects =
       , link = "https://smos.cs-syd.eu"
       , contributorLevel = "Beginner, Intermediate"
       , contact = "Mr Kerckhove"
-      , description = "A purely functional semantic forest editor to replace Emacs&#39; Org Mode."
+      , description = "A purely functional semantic forest editor to replace Emacs' Org Mode."
       }
     , { name = "snack"
       , link = "https://github.com/nmattia/snack/"
