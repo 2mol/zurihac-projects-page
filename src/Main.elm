@@ -5,6 +5,7 @@ import Html exposing (Attribute, Html, a, div, text)
 import Html.Attributes as HtmlA exposing (class, href)
 import Html.Events exposing (onClick)
 import Projects exposing (..)
+import Set exposing (Set)
 import Table exposing (defaultCustomizations)
 
 
@@ -18,7 +19,8 @@ main =
 
 
 type alias Model =
-    { projects : List ( Bool, Project )
+    { projects : List Project
+    , selectedProjects : Set Int
     , tableState : Table.State
     }
 
@@ -27,7 +29,8 @@ init : ( Model, Cmd Msg )
 init =
     let
         model =
-            { projects = List.map (\p -> ( False, p )) projects
+            { projects = projects
+            , selectedProjects = Set.empty
             , tableState = Table.initialSort "Name"
             }
     in
@@ -40,10 +43,18 @@ type Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update msg ({ selectedProjects } as model) =
     case msg of
         ToggleSelected id ->
-            ( { model | projects = List.map (toggle id) model.projects }
+            let
+                newSelectedProjects =
+                    if Set.member id selectedProjects then
+                        Set.remove id selectedProjects
+
+                    else
+                        Set.insert id selectedProjects
+            in
+            ( { model | selectedProjects = newSelectedProjects }
             , Cmd.none
             )
 
@@ -53,46 +64,37 @@ update msg model =
             )
 
 
-toggle : Int -> ( Bool, Project ) -> ( Bool, Project )
-toggle id ( sel, p ) =
-    if p.id == id then
-        ( not sel, p )
-
-    else
-        ( sel, p )
-
-
 view : Model -> Html Msg
-view { projects, tableState } =
+view { projects, tableState, selectedProjects } =
     div []
         [ Html.h1 [] [ text "Projects" ]
-        , Table.view tableConfig tableState projects
+        , Table.view (tableConfig selectedProjects) tableState projects
         ]
 
 
-tableConfig : Table.Config ( Bool, Project ) Msg
-tableConfig =
+tableConfig : Set Int -> Table.Config Project Msg
+tableConfig selectedIds =
     Table.customConfig
-        { toId = Tuple.second >> .name
+        { toId = .name
         , toMsg = SetTableState
         , columns =
-            [ infoColumn
-            , Table.stringColumn "Contact" (Tuple.second >> .contact)
-            , Table.stringColumn "Level" (Tuple.second >> .contributorLevel)
+            [ infoColumn selectedIds
+            , Table.stringColumn "Contact" .contact
+            , Table.stringColumn "Level" .contributorLevel
             ]
         , customizations =
             { defaultCustomizations
                 | tableAttrs = [ class "projects" ]
                 , thead = simpleThead
-                , rowAttrs = toRowAttrs
+                , rowAttrs = toRowAttrs selectedIds
             }
         }
 
 
-toRowAttrs : ( Bool, Project ) -> List (Attribute Msg)
-toRowAttrs ( sel, p ) =
+toRowAttrs : Set Int -> Project -> List (Attribute Msg)
+toRowAttrs selectedIds p =
     [ class
-        (if sel then
+        (if Set.member p.id selectedIds then
             "selected"
 
          else
@@ -101,20 +103,20 @@ toRowAttrs ( sel, p ) =
     ]
 
 
-infoColumn : Table.Column ( Bool, Project ) Msg
-infoColumn =
+infoColumn : Set Int -> Table.Column Project Msg
+infoColumn selectedIds =
     Table.veryCustomColumn
         { name = "Name"
-        , viewData = viewInfo
-        , sorter = Table.increasingOrDecreasingBy (Tuple.second >> .name)
+        , viewData = viewInfo selectedIds
+        , sorter = Table.increasingOrDecreasingBy .name
         }
 
 
-viewInfo : ( Bool, Project ) -> Table.HtmlDetails Msg
-viewInfo ( sel, p ) =
+viewInfo : Set Int -> Project -> Table.HtmlDetails Msg
+viewInfo selectedIds p =
     let
         iconFile =
-            if sel then
+            if Set.member p.id selectedIds then
                 "bookmark-solid.svg"
 
             else

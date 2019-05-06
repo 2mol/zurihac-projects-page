@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.Q.B === region.X.B)
+	if (region.S.B === region.Z.B)
 	{
-		return 'on line ' + region.Q.B;
+		return 'on line ' + region.S.B;
 	}
-	return 'on lines ' + region.Q.B + ' through ' + region.X.B;
+	return 'on lines ' + region.S.B + ' through ' + region.Z.B;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aF,
-		impl.aT,
-		impl.aN,
+		impl.aG,
+		impl.aU,
+		impl.aO,
 		function() { return function() {} }
 	);
 });
@@ -2660,8 +2660,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		k: func(record.k),
-		R: record.R,
-		P: record.P
+		T: record.T,
+		Q: record.Q
 	}
 });
 
@@ -2930,10 +2930,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.k;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.R;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.T;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.P) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.Q) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3883,11 +3883,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aF,
-		impl.aT,
-		impl.aN,
+		impl.aG,
+		impl.aU,
+		impl.aO,
 		function(sendToApp, initialModel) {
-			var view = impl.aV;
+			var view = impl.aW;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3919,12 +3919,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aF,
-		impl.aT,
-		impl.aN,
+		impl.aG,
+		impl.aU,
+		impl.aO,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.D && impl.D(sendToApp)
-			var view = impl.aV;
+			var view = impl.aW;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3932,12 +3932,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.at);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.au);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aQ) && (_VirtualDom_doc.title = title = doc.aQ);
+				(title !== doc.aR) && (_VirtualDom_doc.title = title = doc.aR);
 			});
 		}
 	);
@@ -3993,8 +3993,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aH;
-	var onUrlRequest = impl.aI;
+	var onUrlChange = impl.aI;
+	var onUrlRequest = impl.aJ;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4014,9 +4014,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aj === next.aj
-							&& curr._ === next._
-							&& curr.ag.a === next.ag.a
+							&& curr.ak === next.ak
+							&& curr.ab === next.ab
+							&& curr.ah.a === next.ah.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4024,13 +4024,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aF: function(flags)
+		aG: function(flags)
 		{
-			return A3(impl.aF, flags, _Browser_getUrl(), key);
+			return A3(impl.aG, flags, _Browser_getUrl(), key);
 		},
-		aV: impl.aV,
-		aT: impl.aT,
-		aN: impl.aN
+		aW: impl.aW,
+		aU: impl.aU,
+		aO: impl.aO
 	});
 }
 
@@ -4096,17 +4096,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aD: 'hidden', au: 'visibilitychange' }
+		? { aE: 'hidden', av: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aD: 'mozHidden', au: 'mozvisibilitychange' }
+		? { aE: 'mozHidden', av: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aD: 'msHidden', au: 'msvisibilitychange' }
+		? { aE: 'msHidden', av: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aD: 'webkitHidden', au: 'webkitvisibilitychange' }
-		: { aD: 'hidden', au: 'visibilitychange' };
+		? { aE: 'webkitHidden', av: 'webkitvisibilitychange' }
+		: { aE: 'hidden', av: 'visibilitychange' };
 }
 
 
@@ -4187,8 +4187,8 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		an: _Browser_getScene(),
-		aq: {
+		ao: _Browser_getScene(),
+		ar: {
 			K: _Browser_window.pageXOffset,
 			L: _Browser_window.pageYOffset,
 			x: _Browser_doc.documentElement.clientWidth,
@@ -4226,11 +4226,11 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			an: {
+			ao: {
 				x: node.scrollWidth,
 				s: node.scrollHeight
 			},
-			aq: {
+			ar: {
 				K: node.scrollLeft,
 				L: node.scrollTop,
 				x: node.clientWidth,
@@ -4264,14 +4264,14 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			an: _Browser_getScene(),
-			aq: {
+			ao: _Browser_getScene(),
+			ar: {
 				K: x,
 				L: y,
 				x: _Browser_doc.documentElement.clientWidth,
 				s: _Browser_doc.documentElement.clientHeight
 			},
-			aA: {
+			aB: {
 				K: x + rect.left,
 				L: y + rect.top,
 				x: rect.width,
@@ -4392,46 +4392,46 @@ var elm$core$Set$toList = function (_n0) {
 };
 var author$project$Projects$projects = _List_fromArray(
 	[
-		{aw: 'Bodigrim', ax: 'Beginner, Intermediate, Advanced', az: 'arithmoi is a Haskell library for number theory: modular arithmetic, primes, elliptic curves, etc. It is also an excellent tool for Project Euler.', aa: 0, aG: 'https://github.com/cartazio/arithmoi', I: 'arithmoi'},
-		{aw: 'Shao Cheng', ax: 'Advanced', az: 'A Haskell to WebAssembly compiler.', aa: 1, aG: 'https://github.com/tweag/asterius', I: 'Asterius'},
-		{aw: 'Silvio Böhler', ax: 'Beginner, Intermediate, Advanced', az: 'An accounting tool inspired by beancount and ledger.', aa: 2, aG: 'https://github.com/sboehler/beans', I: 'beans'},
-		{aw: 'Mikhail Glushenkov', ax: 'Intermediate, Advanced', az: 'Cabal is a system for building and packaging Haskell libraries and programs.', aa: 3, aG: 'https://haskell.org/cabal', I: 'Cabal'},
-		{aw: 'Ganesh Sittampalam', ax: 'Intermediate, Advanced', az: 'The darcs version control system.', aa: 4, aG: 'https://darcs.net', I: 'Darcs'},
-		{aw: 'ocramz', ax: 'Beginner, Intermediate, Advanced', az: 'Figuring out a native library and API for data science in Haskell.', aa: 5, aG: 'https://github.com/DataHaskell/dh-core', I: 'DataHaskell core'},
-		{aw: 'Arian van Putten', ax: 'Beginner', az: 'Dhall k8s is a library for working with k8s in dhall. It currently generates dhall code from swagger spec using python. However I wanna port it to Haskell so I can use the Dhall AST directly instead of strings.', aa: 6, aG: 'https://github.com/dhall-lang/dhall-kubernetes', I: 'Dhall Kubernetes'},
-		{aw: 'dim1tri', ax: 'Beginner, Intermediate', az: 'Haskell API to communicate with vehicles over MAVLink.', aa: 7, aG: 'https://github.com/dim1tri/dronekit-haskell', I: 'Dronekit'},
-		{aw: 'Peter Trommler', ax: 'Intermediate', az: 'Implement dynamic linking on Linux to match features of the RTS linker.', aa: 8, aG: 'https://ghc.haskell.org/trac/ghc/ticket/11238', I: 'Dynamic Linking in GHC'},
-		{aw: 'Manu Gupta', ax: 'Intermediate, Advanced', az: 'Enabling the bottom of pyramid through EHR and Radiology services on the cloud using open source spreadsheet powered by Glasgow Haskell Compiler on AWS and Google Cloud, Open Source Picture Archiving and Communications System and PyDICOM, Ethereum Blockchain Network. EHR as a service aims at providing secure data storage, transparent data movement and data authenticity along with early detection and prevention of diseases.', aa: 9, aG: 'https://sites.google.com/view/electronichealthrecords/home', I: 'Electronic Health Records Management as a Service'},
-		{aw: 'Akii', ax: 'Beginner, Intermediate', az: 'Elevator and escalator disruption analysis.', aa: 10, aG: 'https://elescore.de', I: 'Elescore'},
-		{aw: 'Ninjatrappeur', ax: 'Beginner, Intermediate, Advanced', az: 'Example-based Haskell Documentation', aa: 11, aG: 'https://github.com/NinjaTrappeur/ex-hack', I: 'Ex-Hack'},
-		{aw: 'Manu Gupta', ax: 'Beginner, Intermediate', az: 'We wish to extend and adapt octave (open source version of matlab) using Glasgow Haskell Compiler and Open Source spreadsheet namely Ethercalc. This will enable students and researchers to actively use Matlab for a variety of high performance and super computing applications in the fields of Physics, Chemistry, Biology and Mathematics.', aa: 12, aG: 'https://seeta.in', I: 'Extending and Adapting Octave using Glasgow Haskell Compiler and Open Source Spreadsheet'},
-		{aw: 'Yuriy Syrovetskiy', ax: 'Intermediate', az: 'Task tracker and note taker.', aa: 13, aG: 'https://github.com/ff-notes', I: 'ff'},
-		{aw: 'Tobias Dammers', ax: 'Beginner, Intermediate, Advanced', az: 'A pure Haskell implementation of the Jinja2 HTML template language.', aa: 14, aG: 'https://ginger.tobiasdammers.nl/', I: 'Ginger'},
-		{aw: 'Robert Klotzner', ax: 'Intermediate, Advanced', az: 'Web based baby monitor', aa: 15, aG: 'https://gonimo.com', I: 'Gonimo'},
-		{aw: 'Peter Podlovics', ax: 'Intermediate, Advanced', az: 'GRIN is short for Graph Reduction Intermediate Notation, a modern back end for lazy functional languages. Most of the currently available compilers for such languages share a common flaw: they can only optimize programs on a per-module basis. The GRIN framework allows for interprocedural whole program analysis, enabling optimizing code transformations across functions and modules as well.', aa: 16, aG: 'https://github.com/grin-tech/grin', I: 'GRIN'},
-		{aw: 'Sofía Cordero', ax: 'Beginner', az: 'Learning methodology for Haskell', aa: 17, aG: 'https://haskellmad.github.io/haskellnautas/articulos/2018-05-31-haskell-con-katas-introduccion-a-codewars/', I: 'Haskell Katas'},
-		{aw: 'winterland1989', ax: 'Intermediate, Advanced', az: 'IO toolkit based on libuv for GHC', aa: 18, aG: 'https://github.com/orgs/haskell-stdio', I: 'haskell-stdio'},
-		{aw: 'John Wiegley', ax: 'Intermediate, Advanced', az: 'An implementation of the Nix language in Haskell', aa: 19, aG: 'https://github.com/haskell-nix/hnix', I: 'hnix'},
-		{aw: 'Manu Gupta', ax: 'Intermediate, Advanced', az: 'Enabling the Bottom of Pyramid through Water Management Services on the Cloud build using Reflex FRP framework, Water Quality Tools, Open Source Spreadsheet with Haskell server stack and Picture Archiving and Communication System. Remote Water Monitoring, Sewage Management, Quality Assurance and Recyclability of Water using a software stack build with Glasgow Haskell Compiler.', aa: 20, aG: 'https://sites.google.com/view/integratedwatermanagment/home', I: 'Integrated Water Management Resource Center'},
-		{aw: 'Christopher Goes', ax: 'Advanced', az: 'Haskell/Idris to Michelson/WASM smart contract compiler (work in progress).', aa: 21, aG: 'https://github.com/cwgoes/juvix', I: 'Juvix'},
-		{aw: 'Alexey Kuleshevich', ax: 'Beginner, Intermediate, Advanced', az: 'Efficient Haskell Arrays featuring Parallel computation.', aa: 22, aG: 'https://github.com/lehins/massiv', I: 'massiv'},
-		{aw: 'Neil Mitchell', ax: 'Intermediate, Advanced', az: 'Shake build system.', aa: 23, aG: 'https://shakebuild.com', I: 'Shake'},
-		{aw: 'angerman', ax: 'Beginner, Intermediate, Advanced', az: 'A better haskell infrastructure for nix', aa: 24, aG: 'https://github.com/angerman/nix-tools', I: 'nix-tools'},
-		{aw: 'ludat', ax: 'Intermediate', az: 'I\'d like to build a haskell config library along the lines of Java\'s spring-config.', aa: 25, aG: '', I: '(no name)'},
-		{aw: 'Mark Karpov', ax: 'Intermediate, Advanced', az: 'A new formatter for Haskell source code.', aa: 26, aG: '', I: 'Ormolu'},
-		{aw: 'Mauro Bieg', ax: 'Beginner, Intermediate, Advanced', az: 'Universal document converter', aa: 27, aG: 'http://pandoc.org', I: 'pandoc'},
-		{aw: 'Wolfgang Jeltsch', ax: 'Advanced', az: 'Pomelo is a new FRP library, whose development is just starting. Key goals for Pomelo are a clean semantics and an efficient implementation.', aa: 28, aG: 'https://temporal-pomelo.com/', I: 'Pomelo'},
-		{aw: 'Tiphaine LAURENT', ax: 'Beginner', az: 'Piffomètre Programming Paradigm.', aa: 29, aG: 'http://PPP.pfff', I: 'PPP'},
-		{aw: 'Ru Horlick', ax: 'Intermediate', az: 'A UI based website builder using Reflex and GHCJS. Down with WordPress!', aa: 30, aG: '', I: 'Reflex Site Builder'},
-		{aw: 'Tommaso Piazza', ax: 'Intermediate', az: 'Remote cache for binary artifacts.', aa: 31, aG: 'https://github.com/blender/Rome', I: 'Rome'},
-		{aw: 'Alp', ax: 'Beginner, Intermediate, Advanced', az: 'A library for writing web applications, deriving clients and more.', aa: 32, aG: 'https://haskell-servant.github.io/', I: 'servant'},
-		{aw: 'Mr Kerckhove', ax: 'Beginner, Intermediate', az: 'A purely functional semantic forest editor to replace Emacs\' Org Mode.', aa: 33, aG: 'https://smos.cs-syd.eu', I: 'Smos'},
-		{aw: 'Nicolas Mattia', ax: 'Advanced', az: 'Nix-based incremental build tool for Haskell projects.', aa: 34, aG: 'https://github.com/nmattia/snack/', I: 'snack'},
-		{aw: 'Fabrizio Ferrai', ax: 'Beginner, Intermediate', az: 'PureScript package manager and build tool powered by Dhall and Spacchetti.', aa: 35, aG: 'https://github.com/spacchetti/spago', I: 'spago'},
-		{aw: 'Auke Booij', ax: 'Intermediate, Advanced', az: 'Haskell implementation of the wayland protocol.', aa: 36, aG: 'https://github.com/abooij/sudbury', I: 'sudbury'},
-		{aw: 'Adrian Sieber', ax: 'Intermediate', az: 'CLI task / todo manager built with Haskell and SQLite', aa: 37, aG: 'https://github.com/ad-si/tasklite', I: 'TaskLite'},
-		{aw: 'Csaba Hruska', ax: 'Advanced', az: 'GRIN is a compiler back-end for lazy and strict functional languages with whole program optimization support.', aa: 38, aG: 'https://github.com/grin-tech/grin', I: 'The GRIN Compiler'},
-		{aw: 'Ben Brunzel', ax: 'Beginner, Intermediate, Advanced', az: 'traze is a MQTT based tronlike multiplayer game with a Gameserver implementation in Haskell.', aa: 39, aG: 'https://github.com/iteratec/traze-gameserver', I: 'traze'}
+		{ax: 'Bodigrim', ay: 'Beginner, Intermediate, Advanced', aA: 'arithmoi is a Haskell library for number theory: modular arithmetic, primes, elliptic curves, etc. It is also an excellent tool for Project Euler.', N: 0, aH: 'https://github.com/cartazio/arithmoi', I: 'arithmoi'},
+		{ax: 'Shao Cheng', ay: 'Advanced', aA: 'A Haskell to WebAssembly compiler.', N: 1, aH: 'https://github.com/tweag/asterius', I: 'Asterius'},
+		{ax: 'Silvio Böhler', ay: 'Beginner, Intermediate, Advanced', aA: 'An accounting tool inspired by beancount and ledger.', N: 2, aH: 'https://github.com/sboehler/beans', I: 'beans'},
+		{ax: 'Mikhail Glushenkov', ay: 'Intermediate, Advanced', aA: 'Cabal is a system for building and packaging Haskell libraries and programs.', N: 3, aH: 'https://haskell.org/cabal', I: 'Cabal'},
+		{ax: 'Ganesh Sittampalam', ay: 'Intermediate, Advanced', aA: 'The darcs version control system.', N: 4, aH: 'https://darcs.net', I: 'Darcs'},
+		{ax: 'ocramz', ay: 'Beginner, Intermediate, Advanced', aA: 'Figuring out a native library and API for data science in Haskell.', N: 5, aH: 'https://github.com/DataHaskell/dh-core', I: 'DataHaskell core'},
+		{ax: 'Arian van Putten', ay: 'Beginner', aA: 'Dhall k8s is a library for working with k8s in dhall. It currently generates dhall code from swagger spec using python. However I wanna port it to Haskell so I can use the Dhall AST directly instead of strings.', N: 6, aH: 'https://github.com/dhall-lang/dhall-kubernetes', I: 'Dhall Kubernetes'},
+		{ax: 'dim1tri', ay: 'Beginner, Intermediate', aA: 'Haskell API to communicate with vehicles over MAVLink.', N: 7, aH: 'https://github.com/dim1tri/dronekit-haskell', I: 'Dronekit'},
+		{ax: 'Peter Trommler', ay: 'Intermediate', aA: 'Implement dynamic linking on Linux to match features of the RTS linker.', N: 8, aH: 'https://ghc.haskell.org/trac/ghc/ticket/11238', I: 'Dynamic Linking in GHC'},
+		{ax: 'Manu Gupta', ay: 'Intermediate, Advanced', aA: 'Enabling the bottom of pyramid through EHR and Radiology services on the cloud using open source spreadsheet powered by Glasgow Haskell Compiler on AWS and Google Cloud, Open Source Picture Archiving and Communications System and PyDICOM, Ethereum Blockchain Network. EHR as a service aims at providing secure data storage, transparent data movement and data authenticity along with early detection and prevention of diseases.', N: 9, aH: 'https://sites.google.com/view/electronichealthrecords/home', I: 'Electronic Health Records Management as a Service'},
+		{ax: 'Akii', ay: 'Beginner, Intermediate', aA: 'Elevator and escalator disruption analysis.', N: 10, aH: 'https://elescore.de', I: 'Elescore'},
+		{ax: 'Ninjatrappeur', ay: 'Beginner, Intermediate, Advanced', aA: 'Example-based Haskell Documentation', N: 11, aH: 'https://github.com/NinjaTrappeur/ex-hack', I: 'Ex-Hack'},
+		{ax: 'Manu Gupta', ay: 'Beginner, Intermediate', aA: 'We wish to extend and adapt octave (open source version of matlab) using Glasgow Haskell Compiler and Open Source spreadsheet namely Ethercalc. This will enable students and researchers to actively use Matlab for a variety of high performance and super computing applications in the fields of Physics, Chemistry, Biology and Mathematics.', N: 12, aH: 'https://seeta.in', I: 'Extending and Adapting Octave using Glasgow Haskell Compiler and Open Source Spreadsheet'},
+		{ax: 'Yuriy Syrovetskiy', ay: 'Intermediate', aA: 'Task tracker and note taker.', N: 13, aH: 'https://github.com/ff-notes', I: 'ff'},
+		{ax: 'Tobias Dammers', ay: 'Beginner, Intermediate, Advanced', aA: 'A pure Haskell implementation of the Jinja2 HTML template language.', N: 14, aH: 'https://ginger.tobiasdammers.nl/', I: 'Ginger'},
+		{ax: 'Robert Klotzner', ay: 'Intermediate, Advanced', aA: 'Web based baby monitor', N: 15, aH: 'https://gonimo.com', I: 'Gonimo'},
+		{ax: 'Peter Podlovics', ay: 'Intermediate, Advanced', aA: 'GRIN is short for Graph Reduction Intermediate Notation, a modern back end for lazy functional languages. Most of the currently available compilers for such languages share a common flaw: they can only optimize programs on a per-module basis. The GRIN framework allows for interprocedural whole program analysis, enabling optimizing code transformations across functions and modules as well.', N: 16, aH: 'https://github.com/grin-tech/grin', I: 'GRIN'},
+		{ax: 'Sofía Cordero', ay: 'Beginner', aA: 'Learning methodology for Haskell', N: 17, aH: 'https://haskellmad.github.io/haskellnautas/articulos/2018-05-31-haskell-con-katas-introduccion-a-codewars/', I: 'Haskell Katas'},
+		{ax: 'winterland1989', ay: 'Intermediate, Advanced', aA: 'IO toolkit based on libuv for GHC', N: 18, aH: 'https://github.com/orgs/haskell-stdio', I: 'haskell-stdio'},
+		{ax: 'John Wiegley', ay: 'Intermediate, Advanced', aA: 'An implementation of the Nix language in Haskell', N: 19, aH: 'https://github.com/haskell-nix/hnix', I: 'hnix'},
+		{ax: 'Manu Gupta', ay: 'Intermediate, Advanced', aA: 'Enabling the Bottom of Pyramid through Water Management Services on the Cloud build using Reflex FRP framework, Water Quality Tools, Open Source Spreadsheet with Haskell server stack and Picture Archiving and Communication System. Remote Water Monitoring, Sewage Management, Quality Assurance and Recyclability of Water using a software stack build with Glasgow Haskell Compiler.', N: 20, aH: 'https://sites.google.com/view/integratedwatermanagment/home', I: 'Integrated Water Management Resource Center'},
+		{ax: 'Christopher Goes', ay: 'Advanced', aA: 'Haskell/Idris to Michelson/WASM smart contract compiler (work in progress).', N: 21, aH: 'https://github.com/cwgoes/juvix', I: 'Juvix'},
+		{ax: 'Alexey Kuleshevich', ay: 'Beginner, Intermediate, Advanced', aA: 'Efficient Haskell Arrays featuring Parallel computation.', N: 22, aH: 'https://github.com/lehins/massiv', I: 'massiv'},
+		{ax: 'Neil Mitchell', ay: 'Intermediate, Advanced', aA: 'Shake build system.', N: 23, aH: 'https://shakebuild.com', I: 'Shake'},
+		{ax: 'angerman', ay: 'Beginner, Intermediate, Advanced', aA: 'A better haskell infrastructure for nix', N: 24, aH: 'https://github.com/angerman/nix-tools', I: 'nix-tools'},
+		{ax: 'ludat', ay: 'Intermediate', aA: 'I\'d like to build a haskell config library along the lines of Java\'s spring-config.', N: 25, aH: '', I: '(no name)'},
+		{ax: 'Mark Karpov', ay: 'Intermediate, Advanced', aA: 'A new formatter for Haskell source code.', N: 26, aH: '', I: 'Ormolu'},
+		{ax: 'Mauro Bieg', ay: 'Beginner, Intermediate, Advanced', aA: 'Universal document converter', N: 27, aH: 'http://pandoc.org', I: 'pandoc'},
+		{ax: 'Wolfgang Jeltsch', ay: 'Advanced', aA: 'Pomelo is a new FRP library, whose development is just starting. Key goals for Pomelo are a clean semantics and an efficient implementation.', N: 28, aH: 'https://temporal-pomelo.com/', I: 'Pomelo'},
+		{ax: 'Tiphaine LAURENT', ay: 'Beginner', aA: 'Piffomètre Programming Paradigm.', N: 29, aH: 'http://PPP.pfff', I: 'PPP'},
+		{ax: 'Ru Horlick', ay: 'Intermediate', aA: 'A UI based website builder using Reflex and GHCJS. Down with WordPress!', N: 30, aH: '', I: 'Reflex Site Builder'},
+		{ax: 'Tommaso Piazza', ay: 'Intermediate', aA: 'Remote cache for binary artifacts.', N: 31, aH: 'https://github.com/blender/Rome', I: 'Rome'},
+		{ax: 'Alp', ay: 'Beginner, Intermediate, Advanced', aA: 'A library for writing web applications, deriving clients and more.', N: 32, aH: 'https://haskell-servant.github.io/', I: 'servant'},
+		{ax: 'Mr Kerckhove', ay: 'Beginner, Intermediate', aA: 'A purely functional semantic forest editor to replace Emacs\' Org Mode.', N: 33, aH: 'https://smos.cs-syd.eu', I: 'Smos'},
+		{ax: 'Nicolas Mattia', ay: 'Advanced', aA: 'Nix-based incremental build tool for Haskell projects.', N: 34, aH: 'https://github.com/nmattia/snack/', I: 'snack'},
+		{ax: 'Fabrizio Ferrai', ay: 'Beginner, Intermediate', aA: 'PureScript package manager and build tool powered by Dhall and Spacchetti.', N: 35, aH: 'https://github.com/spacchetti/spago', I: 'spago'},
+		{ax: 'Auke Booij', ay: 'Intermediate, Advanced', aA: 'Haskell implementation of the wayland protocol.', N: 36, aH: 'https://github.com/abooij/sudbury', I: 'sudbury'},
+		{ax: 'Adrian Sieber', ay: 'Intermediate', aA: 'CLI task / todo manager built with Haskell and SQLite', N: 37, aH: 'https://github.com/ad-si/tasklite', I: 'TaskLite'},
+		{ax: 'Csaba Hruska', ay: 'Advanced', aA: 'GRIN is a compiler back-end for lazy and strict functional languages with whole program optimization support.', N: 38, aH: 'https://github.com/grin-tech/grin', I: 'The GRIN Compiler'},
+		{ax: 'Ben Brunzel', ay: 'Beginner, Intermediate, Advanced', aA: 'traze is a MQTT based tronlike multiplayer game with a Gameserver implementation in Haskell.', N: 39, aH: 'https://github.com/iteratec/traze-gameserver', I: 'traze'}
 	]);
 var billstclair$elm_sortable_table$Table$State = F2(
 	function (a, b) {
@@ -4441,99 +4441,6 @@ var elm$core$Basics$False = 1;
 var billstclair$elm_sortable_table$Table$initialSort = function (header) {
 	return A2(billstclair$elm_sortable_table$Table$State, header, false);
 };
-var elm$core$Basics$add = _Basics_add;
-var elm$core$Basics$gt = _Utils_gt;
-var elm$core$List$foldl = F3(
-	function (func, acc, list) {
-		foldl:
-		while (true) {
-			if (!list.b) {
-				return acc;
-			} else {
-				var x = list.a;
-				var xs = list.b;
-				var $temp$func = func,
-					$temp$acc = A2(func, x, acc),
-					$temp$list = xs;
-				func = $temp$func;
-				acc = $temp$acc;
-				list = $temp$list;
-				continue foldl;
-			}
-		}
-	});
-var elm$core$List$reverse = function (list) {
-	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
-};
-var elm$core$List$foldrHelper = F4(
-	function (fn, acc, ctr, ls) {
-		if (!ls.b) {
-			return acc;
-		} else {
-			var a = ls.a;
-			var r1 = ls.b;
-			if (!r1.b) {
-				return A2(fn, a, acc);
-			} else {
-				var b = r1.a;
-				var r2 = r1.b;
-				if (!r2.b) {
-					return A2(
-						fn,
-						a,
-						A2(fn, b, acc));
-				} else {
-					var c = r2.a;
-					var r3 = r2.b;
-					if (!r3.b) {
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(fn, c, acc)));
-					} else {
-						var d = r3.a;
-						var r4 = r3.b;
-						var res = (ctr > 500) ? A3(
-							elm$core$List$foldl,
-							fn,
-							acc,
-							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(
-									fn,
-									c,
-									A2(fn, d, res))));
-					}
-				}
-			}
-		}
-	});
-var elm$core$List$foldr = F3(
-	function (fn, acc, ls) {
-		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
-	});
-var elm$core$List$map = F2(
-	function (f, xs) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, acc) {
-					return A2(
-						elm$core$List$cons,
-						f(x),
-						acc);
-				}),
-			_List_Nil,
-			xs);
-	});
 var elm$core$Basics$True = 0;
 var elm$core$Result$isOk = function (result) {
 	if (!result.$) {
@@ -4565,6 +4472,28 @@ var elm$core$Array$SubTree = function (a) {
 	return {$: 0, a: a};
 };
 var elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
+var elm$core$List$foldl = F3(
+	function (func, acc, list) {
+		foldl:
+		while (true) {
+			if (!list.b) {
+				return acc;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				var $temp$func = func,
+					$temp$acc = A2(func, x, acc),
+					$temp$list = xs;
+				func = $temp$func;
+				acc = $temp$acc;
+				list = $temp$list;
+				continue foldl;
+			}
+		}
+	});
+var elm$core$List$reverse = function (list) {
+	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
+};
 var elm$core$Array$compressNodes = F2(
 	function (nodes, acc) {
 		compressNodes:
@@ -4612,11 +4541,13 @@ var elm$core$Array$treeFromBuilder = F2(
 			}
 		}
 	});
+var elm$core$Basics$add = _Basics_add;
 var elm$core$Basics$apL = F2(
 	function (f, x) {
 		return f(x);
 	});
 var elm$core$Basics$floor = _Basics_floor;
+var elm$core$Basics$gt = _Utils_gt;
 var elm$core$Basics$max = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) > 0) ? x : y;
@@ -4906,38 +4837,557 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
+var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
+var elm$core$Set$Set_elm_builtin = elm$core$Basics$identity;
+var elm$core$Set$empty = elm$core$Dict$empty;
 var author$project$Main$init = function () {
 	var model = {
-		C: A2(
-			elm$core$List$map,
-			function (p) {
-				return _Utils_Tuple2(false, p);
-			},
-			author$project$Projects$projects),
+		R: author$project$Projects$projects,
+		C: elm$core$Set$empty,
 		J: billstclair$elm_sortable_table$Table$initialSort('Name')
 	};
 	return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 }();
-var elm$core$Basics$not = _Basics_not;
-var author$project$Main$toggle = F2(
-	function (id, _n0) {
-		var sel = _n0.a;
-		var p = _n0.b;
-		return _Utils_eq(p.aa, id) ? _Utils_Tuple2(!sel, p) : _Utils_Tuple2(sel, p);
+var elm$core$Dict$Black = 1;
+var elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+	});
+var elm$core$Basics$compare = _Utils_compare;
+var elm$core$Dict$Red = 0;
+var elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === -1) && (!right.a)) {
+			var _n1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === -1) && (!left.a)) {
+				var _n3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					0,
+					key,
+					value,
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+				var _n5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _n6 = left.d;
+				var _n7 = _n6.a;
+				var llK = _n6.b;
+				var llV = _n6.c;
+				var llLeft = _n6.d;
+				var llRight = _n6.e;
+				var lRight = left.e;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					0,
+					lK,
+					lV,
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+			} else {
+				return A5(elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === -2) {
+			return A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, elm$core$Dict$RBEmpty_elm_builtin, elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _n1 = A2(elm$core$Basics$compare, key, nKey);
+			switch (_n1) {
+				case 0:
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3(elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 1:
+					return A5(elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3(elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _n0 = A3(elm$core$Dict$insertHelp, key, value, dict);
+		if ((_n0.$ === -1) && (!_n0.a)) {
+			var _n1 = _n0.a;
+			var k = _n0.b;
+			var v = _n0.c;
+			var l = _n0.d;
+			var r = _n0.e;
+			return A5(elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _n0;
+			return x;
+		}
+	});
+var elm$core$Set$insert = F2(
+	function (key, _n0) {
+		var dict = _n0;
+		return A3(elm$core$Dict$insert, key, 0, dict);
+	});
+var elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
+				switch (_n1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var elm$core$Dict$member = F2(
+	function (key, dict) {
+		var _n0 = A2(elm$core$Dict$get, key, dict);
+		if (!_n0.$) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var elm$core$Set$member = F2(
+	function (key, _n0) {
+		var dict = _n0;
+		return A2(elm$core$Dict$member, key, dict);
+	});
+var elm$core$Dict$getMin = function (dict) {
+	getMin:
+	while (true) {
+		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+			var left = dict.d;
+			var $temp$dict = left;
+			dict = $temp$dict;
+			continue getMin;
+		} else {
+			return dict;
+		}
+	}
+};
+var elm$core$Dict$moveRedLeft = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n1 = dict.d;
+			var lClr = _n1.a;
+			var lK = _n1.b;
+			var lV = _n1.c;
+			var lLeft = _n1.d;
+			var lRight = _n1.e;
+			var _n2 = dict.e;
+			var rClr = _n2.a;
+			var rK = _n2.b;
+			var rV = _n2.c;
+			var rLeft = _n2.d;
+			var _n3 = rLeft.a;
+			var rlK = rLeft.b;
+			var rlV = rLeft.c;
+			var rlL = rLeft.d;
+			var rlR = rLeft.e;
+			var rRight = _n2.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				0,
+				rlK,
+				rlV,
+				A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					rlL),
+				A5(elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n4 = dict.d;
+			var lClr = _n4.a;
+			var lK = _n4.b;
+			var lV = _n4.c;
+			var lLeft = _n4.d;
+			var lRight = _n4.e;
+			var _n5 = dict.e;
+			var rClr = _n5.a;
+			var rK = _n5.b;
+			var rV = _n5.c;
+			var rLeft = _n5.d;
+			var rRight = _n5.e;
+			if (clr === 1) {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var elm$core$Dict$moveRedRight = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n1 = dict.d;
+			var lClr = _n1.a;
+			var lK = _n1.b;
+			var lV = _n1.c;
+			var _n2 = _n1.d;
+			var _n3 = _n2.a;
+			var llK = _n2.b;
+			var llV = _n2.c;
+			var llLeft = _n2.d;
+			var llRight = _n2.e;
+			var lRight = _n1.e;
+			var _n4 = dict.e;
+			var rClr = _n4.a;
+			var rK = _n4.b;
+			var rV = _n4.c;
+			var rLeft = _n4.d;
+			var rRight = _n4.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				0,
+				lK,
+				lV,
+				A5(elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					lRight,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n5 = dict.d;
+			var lClr = _n5.a;
+			var lK = _n5.b;
+			var lV = _n5.c;
+			var lLeft = _n5.d;
+			var lRight = _n5.e;
+			var _n6 = dict.e;
+			var rClr = _n6.a;
+			var rK = _n6.b;
+			var rV = _n6.c;
+			var rLeft = _n6.d;
+			var rRight = _n6.e;
+			if (clr === 1) {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var elm$core$Dict$removeHelpPrepEQGT = F7(
+	function (targetKey, dict, color, key, value, left, right) {
+		if ((left.$ === -1) && (!left.a)) {
+			var _n1 = left.a;
+			var lK = left.b;
+			var lV = left.c;
+			var lLeft = left.d;
+			var lRight = left.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				color,
+				lK,
+				lV,
+				lLeft,
+				A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+		} else {
+			_n2$2:
+			while (true) {
+				if ((right.$ === -1) && (right.a === 1)) {
+					if (right.d.$ === -1) {
+						if (right.d.a === 1) {
+							var _n3 = right.a;
+							var _n4 = right.d;
+							var _n5 = _n4.a;
+							return elm$core$Dict$moveRedRight(dict);
+						} else {
+							break _n2$2;
+						}
+					} else {
+						var _n6 = right.a;
+						var _n7 = right.d;
+						return elm$core$Dict$moveRedRight(dict);
+					}
+				} else {
+					break _n2$2;
+				}
+			}
+			return dict;
+		}
+	});
+var elm$core$Dict$removeMin = function (dict) {
+	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		var color = dict.a;
+		var key = dict.b;
+		var value = dict.c;
+		var left = dict.d;
+		var lColor = left.a;
+		var lLeft = left.d;
+		var right = dict.e;
+		if (lColor === 1) {
+			if ((lLeft.$ === -1) && (!lLeft.a)) {
+				var _n3 = lLeft.a;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					color,
+					key,
+					value,
+					elm$core$Dict$removeMin(left),
+					right);
+			} else {
+				var _n4 = elm$core$Dict$moveRedLeft(dict);
+				if (_n4.$ === -1) {
+					var nColor = _n4.a;
+					var nKey = _n4.b;
+					var nValue = _n4.c;
+					var nLeft = _n4.d;
+					var nRight = _n4.e;
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						elm$core$Dict$removeMin(nLeft),
+						nRight);
+				} else {
+					return elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			}
+		} else {
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				color,
+				key,
+				value,
+				elm$core$Dict$removeMin(left),
+				right);
+		}
+	} else {
+		return elm$core$Dict$RBEmpty_elm_builtin;
+	}
+};
+var elm$core$Dict$removeHelp = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -2) {
+			return elm$core$Dict$RBEmpty_elm_builtin;
+		} else {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_cmp(targetKey, key) < 0) {
+				if ((left.$ === -1) && (left.a === 1)) {
+					var _n4 = left.a;
+					var lLeft = left.d;
+					if ((lLeft.$ === -1) && (!lLeft.a)) {
+						var _n6 = lLeft.a;
+						return A5(
+							elm$core$Dict$RBNode_elm_builtin,
+							color,
+							key,
+							value,
+							A2(elm$core$Dict$removeHelp, targetKey, left),
+							right);
+					} else {
+						var _n7 = elm$core$Dict$moveRedLeft(dict);
+						if (_n7.$ === -1) {
+							var nColor = _n7.a;
+							var nKey = _n7.b;
+							var nValue = _n7.c;
+							var nLeft = _n7.d;
+							var nRight = _n7.e;
+							return A5(
+								elm$core$Dict$balance,
+								nColor,
+								nKey,
+								nValue,
+								A2(elm$core$Dict$removeHelp, targetKey, nLeft),
+								nRight);
+						} else {
+							return elm$core$Dict$RBEmpty_elm_builtin;
+						}
+					}
+				} else {
+					return A5(
+						elm$core$Dict$RBNode_elm_builtin,
+						color,
+						key,
+						value,
+						A2(elm$core$Dict$removeHelp, targetKey, left),
+						right);
+				}
+			} else {
+				return A2(
+					elm$core$Dict$removeHelpEQGT,
+					targetKey,
+					A7(elm$core$Dict$removeHelpPrepEQGT, targetKey, dict, color, key, value, left, right));
+			}
+		}
+	});
+var elm$core$Dict$removeHelpEQGT = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -1) {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_eq(targetKey, key)) {
+				var _n1 = elm$core$Dict$getMin(right);
+				if (_n1.$ === -1) {
+					var minKey = _n1.b;
+					var minValue = _n1.c;
+					return A5(
+						elm$core$Dict$balance,
+						color,
+						minKey,
+						minValue,
+						left,
+						elm$core$Dict$removeMin(right));
+				} else {
+					return elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			} else {
+				return A5(
+					elm$core$Dict$balance,
+					color,
+					key,
+					value,
+					left,
+					A2(elm$core$Dict$removeHelp, targetKey, right));
+			}
+		} else {
+			return elm$core$Dict$RBEmpty_elm_builtin;
+		}
+	});
+var elm$core$Dict$remove = F2(
+	function (key, dict) {
+		var _n0 = A2(elm$core$Dict$removeHelp, key, dict);
+		if ((_n0.$ === -1) && (!_n0.a)) {
+			var _n1 = _n0.a;
+			var k = _n0.b;
+			var v = _n0.c;
+			var l = _n0.d;
+			var r = _n0.e;
+			return A5(elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _n0;
+			return x;
+		}
+	});
+var elm$core$Set$remove = F2(
+	function (key, _n0) {
+		var dict = _n0;
+		return A2(elm$core$Dict$remove, key, dict);
 	});
 var author$project$Main$update = F2(
 	function (msg, model) {
+		var selectedProjects = model.C;
 		if (!msg.$) {
 			var id = msg.a;
+			var newSelectedProjects = A2(elm$core$Set$member, id, selectedProjects) ? A2(elm$core$Set$remove, id, selectedProjects) : A2(elm$core$Set$insert, id, selectedProjects);
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{
-						C: A2(
-							elm$core$List$map,
-							author$project$Main$toggle(id),
-							model.C)
-					}),
+					{C: newSelectedProjects}),
 				elm$core$Platform$Cmd$none);
 		} else {
 			var newState = msg.a;
@@ -4958,9 +5408,6 @@ var billstclair$elm_sortable_table$Table$HtmlDetails = F2(
 	function (attributes, children) {
 		return {z: attributes, A: children};
 	});
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5019,45 +5466,44 @@ var elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		elm$json$Json$Decode$succeed(msg));
 };
-var author$project$Main$viewInfo = function (_n0) {
-	var sel = _n0.a;
-	var p = _n0.b;
-	var iconFile = sel ? 'bookmark-solid.svg' : 'bookmark-regular.svg';
-	return A2(
-		billstclair$elm_sortable_table$Table$HtmlDetails,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$img,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$src(iconFile),
-						elm$html$Html$Events$onClick(
-						author$project$Main$ToggleSelected(p.aa)),
-						elm$html$Html$Attributes$class('clickable bookmark')
-					]),
-				_List_Nil),
-				A2(
-				elm$html$Html$a,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('name'),
-						elm$html$Html$Attributes$href(p.aG)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(p.I)
-					])),
-				A2(
-				elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						elm$html$Html$text(p.az)
-					]))
-			]));
-};
+var author$project$Main$viewInfo = F2(
+	function (selectedIds, p) {
+		var iconFile = A2(elm$core$Set$member, p.N, selectedIds) ? 'bookmark-solid.svg' : 'bookmark-regular.svg';
+		return A2(
+			billstclair$elm_sortable_table$Table$HtmlDetails,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$img,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$src(iconFile),
+							elm$html$Html$Events$onClick(
+							author$project$Main$ToggleSelected(p.N)),
+							elm$html$Html$Attributes$class('clickable bookmark')
+						]),
+					_List_Nil),
+					A2(
+					elm$html$Html$a,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('name'),
+							elm$html$Html$Attributes$href(p.aH)
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(p.I)
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text(p.aA)
+						]))
+				]));
+	});
 var billstclair$elm_sortable_table$Table$IncOrDec = function (a) {
 	return {$: 3, a: a};
 };
@@ -5068,27 +5514,17 @@ var billstclair$elm_sortable_table$Table$increasingOrDecreasingBy = function (to
 };
 var billstclair$elm_sortable_table$Table$Column = elm$core$Basics$identity;
 var billstclair$elm_sortable_table$Table$veryCustomColumn = elm$core$Basics$identity;
-var elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
-var elm$core$Tuple$second = function (_n0) {
-	var y = _n0.b;
-	return y;
-};
-var author$project$Main$infoColumn = billstclair$elm_sortable_table$Table$veryCustomColumn(
-	{
-		I: 'Name',
-		aM: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(
-			A2(
-				elm$core$Basics$composeR,
-				elm$core$Tuple$second,
+var author$project$Main$infoColumn = function (selectedIds) {
+	return billstclair$elm_sortable_table$Table$veryCustomColumn(
+		{
+			I: 'Name',
+			aN: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(
 				function ($) {
 					return $.I;
-				})),
-		aW: author$project$Main$viewInfo
-	});
+				}),
+			aX: author$project$Main$viewInfo(selectedIds)
+		});
+};
 var elm$html$Html$th = _VirtualDom_node('th');
 var author$project$Main$simpleTheadHelp = function (_n0) {
 	var name = _n0.a;
@@ -5135,38 +5571,106 @@ var author$project$Main$simpleTheadHelp = function (_n0) {
 			]),
 		content);
 };
+var elm$core$List$foldrHelper = F4(
+	function (fn, acc, ctr, ls) {
+		if (!ls.b) {
+			return acc;
+		} else {
+			var a = ls.a;
+			var r1 = ls.b;
+			if (!r1.b) {
+				return A2(fn, a, acc);
+			} else {
+				var b = r1.a;
+				var r2 = r1.b;
+				if (!r2.b) {
+					return A2(
+						fn,
+						a,
+						A2(fn, b, acc));
+				} else {
+					var c = r2.a;
+					var r3 = r2.b;
+					if (!r3.b) {
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(fn, c, acc)));
+					} else {
+						var d = r3.a;
+						var r4 = r3.b;
+						var res = (ctr > 500) ? A3(
+							elm$core$List$foldl,
+							fn,
+							acc,
+							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(
+									fn,
+									c,
+									A2(fn, d, res))));
+					}
+				}
+			}
+		}
+	});
+var elm$core$List$foldr = F3(
+	function (fn, acc, ls) {
+		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
+	});
+var elm$core$List$map = F2(
+	function (f, xs) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, acc) {
+					return A2(
+						elm$core$List$cons,
+						f(x),
+						acc);
+				}),
+			_List_Nil,
+			xs);
+	});
 var author$project$Main$simpleThead = function (headers) {
 	return A2(
 		billstclair$elm_sortable_table$Table$HtmlDetails,
 		_List_Nil,
 		A2(elm$core$List$map, author$project$Main$simpleTheadHelp, headers));
 };
-var author$project$Main$toRowAttrs = function (_n0) {
-	var sel = _n0.a;
-	var p = _n0.b;
-	return _List_fromArray(
-		[
-			elm$html$Html$Attributes$class(
-			sel ? 'selected' : '')
-		]);
-};
+var author$project$Main$toRowAttrs = F2(
+	function (selectedIds, p) {
+		return _List_fromArray(
+			[
+				elm$html$Html$Attributes$class(
+				A2(elm$core$Set$member, p.N, selectedIds) ? 'selected' : '')
+			]);
+	});
 var billstclair$elm_sortable_table$Table$Config = elm$core$Basics$identity;
 var billstclair$elm_sortable_table$Table$customConfig = function (_n0) {
-	var toId = _n0.aR;
-	var toMsg = _n0.aS;
-	var columns = _n0.av;
-	var customizations = _n0.ay;
+	var toId = _n0.aS;
+	var toMsg = _n0.aT;
+	var columns = _n0.aw;
+	var customizations = _n0.az;
 	return {
-		av: A2(
+		aw: A2(
 			elm$core$List$map,
 			function (_n1) {
 				var cData = _n1;
 				return cData;
 			},
 			columns),
-		ay: customizations,
-		aR: toId,
-		aS: toMsg
+		az: customizations,
+		aS: toId,
+		aT: toMsg
 	};
 };
 var billstclair$elm_sortable_table$Table$simpleRowAttrs = function (_n0) {
@@ -5257,7 +5761,7 @@ var billstclair$elm_sortable_table$Table$simpleThead = function (headers) {
 		_List_Nil,
 		A2(elm$core$List$map, billstclair$elm_sortable_table$Table$simpleTheadHelp, headers));
 };
-var billstclair$elm_sortable_table$Table$defaultCustomizations = {M: elm$core$Maybe$Nothing, aL: billstclair$elm_sortable_table$Table$simpleRowAttrs, aO: _List_Nil, S: _List_Nil, T: elm$core$Maybe$Nothing, aP: billstclair$elm_sortable_table$Table$simpleThead};
+var billstclair$elm_sortable_table$Table$defaultCustomizations = {M: elm$core$Maybe$Nothing, aM: billstclair$elm_sortable_table$Table$simpleRowAttrs, aP: _List_Nil, U: _List_Nil, V: elm$core$Maybe$Nothing, aQ: billstclair$elm_sortable_table$Table$simpleThead};
 var billstclair$elm_sortable_table$Table$textDetails = function (str) {
 	return A2(
 		billstclair$elm_sortable_table$Table$HtmlDetails,
@@ -5276,52 +5780,45 @@ var billstclair$elm_sortable_table$Table$stringColumn = F2(
 	function (name, toStr) {
 		return {
 			I: name,
-			aM: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(toStr),
-			aW: A2(elm$core$Basics$composeL, billstclair$elm_sortable_table$Table$textDetails, toStr)
+			aN: billstclair$elm_sortable_table$Table$increasingOrDecreasingBy(toStr),
+			aX: A2(elm$core$Basics$composeL, billstclair$elm_sortable_table$Table$textDetails, toStr)
 		};
 	});
-var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$customConfig(
-	{
-		av: _List_fromArray(
-			[
-				author$project$Main$infoColumn,
-				A2(
-				billstclair$elm_sortable_table$Table$stringColumn,
-				'Contact',
-				A2(
-					elm$core$Basics$composeR,
-					elm$core$Tuple$second,
-					function ($) {
-						return $.aw;
-					})),
-				A2(
-				billstclair$elm_sortable_table$Table$stringColumn,
-				'Level',
-				A2(
-					elm$core$Basics$composeR,
-					elm$core$Tuple$second,
+var author$project$Main$tableConfig = function (selectedIds) {
+	return billstclair$elm_sortable_table$Table$customConfig(
+		{
+			aw: _List_fromArray(
+				[
+					author$project$Main$infoColumn(selectedIds),
+					A2(
+					billstclair$elm_sortable_table$Table$stringColumn,
+					'Contact',
 					function ($) {
 						return $.ax;
-					}))
-			]),
-		ay: _Utils_update(
-			billstclair$elm_sortable_table$Table$defaultCustomizations,
-			{
-				aL: author$project$Main$toRowAttrs,
-				aO: _List_fromArray(
-					[
-						elm$html$Html$Attributes$class('projects')
-					]),
-				aP: author$project$Main$simpleThead
-			}),
-		aR: A2(
-			elm$core$Basics$composeR,
-			elm$core$Tuple$second,
-			function ($) {
+					}),
+					A2(
+					billstclair$elm_sortable_table$Table$stringColumn,
+					'Level',
+					function ($) {
+						return $.ay;
+					})
+				]),
+			az: _Utils_update(
+				billstclair$elm_sortable_table$Table$defaultCustomizations,
+				{
+					aM: author$project$Main$toRowAttrs(selectedIds),
+					aP: _List_fromArray(
+						[
+							elm$html$Html$Attributes$class('projects')
+						]),
+					aQ: author$project$Main$simpleThead
+				}),
+			aS: function ($) {
 				return $.I;
-			}),
-		aS: author$project$Main$SetTableState
-	});
+			},
+			aT: author$project$Main$SetTableState
+		});
+};
 var billstclair$elm_sortable_table$Table$applySorter = F3(
 	function (isReversed, sorter, data) {
 		switch (sorter.$) {
@@ -5352,7 +5849,7 @@ var billstclair$elm_sortable_table$Table$findSorter = F2(
 				return elm$core$Maybe$Nothing;
 			} else {
 				var name = columnData.a.I;
-				var sorter = columnData.a.aM;
+				var sorter = columnData.a.aN;
 				var remainingColumnData = columnData.b;
 				if (_Utils_eq(name, selectedColumn)) {
 					return elm$core$Maybe$Just(sorter);
@@ -5380,10 +5877,10 @@ var billstclair$elm_sortable_table$Table$sort = F3(
 	});
 var billstclair$elm_sortable_table$Table$getSortedData = F3(
 	function (_n0, state, data) {
-		var toId = _n0.aR;
-		var toMsg = _n0.aS;
-		var columns = _n0.av;
-		var customizations = _n0.ay;
+		var toId = _n0.aS;
+		var toMsg = _n0.aT;
+		var columns = _n0.aw;
+		var customizations = _n0.az;
 		return A3(billstclair$elm_sortable_table$Table$sort, state, columns, data);
 	});
 var billstclair$elm_sortable_table$Table$Reversible = function (a) {
@@ -5408,12 +5905,13 @@ var billstclair$elm_sortable_table$Table$onClick = F3(
 					elm$json$Json$Decode$succeed(isReversed))));
 	});
 var elm$core$Basics$neq = _Utils_notEqual;
+var elm$core$Basics$not = _Basics_not;
 var billstclair$elm_sortable_table$Table$toHeaderInfo = F3(
 	function (_n0, toMsg, _n1) {
 		var sortName = _n0.a;
 		var isReversed = _n0.b;
 		var name = _n1.I;
-		var sorter = _n1.aM;
+		var sorter = _n1.aN;
 		switch (sorter.$) {
 			case 0:
 				return _Utils_Tuple3(
@@ -5455,7 +5953,7 @@ var billstclair$elm_sortable_table$Table$toHeaderInfo = F3(
 var elm$html$Html$td = _VirtualDom_node('td');
 var billstclair$elm_sortable_table$Table$viewCell = F2(
 	function (data, _n0) {
-		var viewData = _n0.aW;
+		var viewData = _n0.aX;
 		var details = viewData(data);
 		return A2(elm$html$Html$td, details.z, details.A);
 	});
@@ -5489,11 +5987,11 @@ var elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 var elm$html$Html$Keyed$node = elm$virtual_dom$VirtualDom$keyedNode;
 var billstclair$elm_sortable_table$Table$view = F3(
 	function (conf, state, data) {
-		var toId = conf.aR;
-		var toMsg = conf.aS;
-		var columns = conf.av;
-		var customizations = conf.ay;
-		var theadDetails = customizations.aP(
+		var toId = conf.aS;
+		var toMsg = conf.aT;
+		var columns = conf.aw;
+		var customizations = conf.az;
+		var theadDetails = customizations.aQ(
 			A2(
 				elm$core$List$map,
 				A2(billstclair$elm_sortable_table$Table$toHeaderInfo, state, toMsg),
@@ -5509,13 +6007,13 @@ var billstclair$elm_sortable_table$Table$view = F3(
 		var tbody = A3(
 			elm$html$Html$Keyed$node,
 			'tbody',
-			customizations.S,
+			customizations.U,
 			A2(
 				elm$core$List$map,
-				A3(billstclair$elm_sortable_table$Table$viewRow, toId, columns, customizations.aL),
+				A3(billstclair$elm_sortable_table$Table$viewRow, toId, columns, customizations.aM),
 				sortedData));
 		var withFoot = function () {
-			var _n1 = customizations.T;
+			var _n1 = customizations.V;
 			if (_n1.$ === 1) {
 				return A2(elm$core$List$cons, tbody, _List_Nil);
 			} else {
@@ -5529,7 +6027,7 @@ var billstclair$elm_sortable_table$Table$view = F3(
 		}();
 		return A2(
 			elm$html$Html$table,
-			customizations.aO,
+			customizations.aP,
 			function () {
 				var _n0 = customizations.M;
 				if (_n0.$ === 1) {
@@ -5547,8 +6045,9 @@ var billstclair$elm_sortable_table$Table$view = F3(
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var author$project$Main$view = function (_n0) {
-	var projects = _n0.C;
+	var projects = _n0.R;
 	var tableState = _n0.J;
+	var selectedProjects = _n0.C;
 	return A2(
 		elm$html$Html$div,
 		_List_Nil,
@@ -5561,7 +6060,11 @@ var author$project$Main$view = function (_n0) {
 					[
 						elm$html$Html$text('Projects')
 					])),
-				A3(billstclair$elm_sortable_table$Table$view, author$project$Main$tableConfig, tableState, projects)
+				A3(
+				billstclair$elm_sortable_table$Table$view,
+				author$project$Main$tableConfig(selectedProjects),
+				tableState,
+				projects)
 			]));
 };
 var elm$browser$Browser$External = function (a) {
@@ -5680,7 +6183,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Z: fragment, _: host, ae: path, ag: port_, aj: protocol, ak: query};
+		return {aa: fragment, ab: host, af: path, ah: port_, ak: protocol, al: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5789,14 +6292,14 @@ var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$main = elm$browser$Browser$element(
 	{
-		aF: function (_n0) {
+		aG: function (_n0) {
 			return author$project$Main$init;
 		},
-		aN: function (_n1) {
+		aO: function (_n1) {
 			return elm$core$Platform$Sub$none;
 		},
-		aT: author$project$Main$update,
-		aV: author$project$Main$view
+		aU: author$project$Main$update,
+		aW: author$project$Main$view
 	});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(0))(0)}});}(this));
