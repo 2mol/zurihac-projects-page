@@ -56,7 +56,7 @@
       <script src="elm.js"></script>
       <script>
         var storedState = localStorage.getItem('save');
-        var startingState = storedState ? JSON.parse(storedState) : null;
+        var startingState = storedState ? JSON.parse(storedState) : [];
         var app = Elm.Main.init({
           node: document.getElementById('elm'),
           flags: startingState
