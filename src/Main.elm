@@ -77,8 +77,8 @@ tableConfig =
         , toMsg = SetTableState
         , columns =
             [ infoColumn
-            , Table.stringColumn "Level" (Tuple.second >> .contributorLevel)
             , Table.stringColumn "Contact" (Tuple.second >> .contact)
+            , Table.stringColumn "Level" (Tuple.second >> .contributorLevel)
             ]
         , customizations =
             { defaultCustomizations
@@ -129,9 +129,6 @@ viewInfo ( sel, p ) =
             ]
             []
         , a [ class "name", href p.link ] [ text p.name ]
-
-        -- , Html.br [] []
-        -- , text p.link
         , Html.p [] [ text p.description ]
         ]
 

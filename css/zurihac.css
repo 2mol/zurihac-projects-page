@@ -381,11 +381,23 @@ footer {
   font-size: 20px;
 }
 
-.projects th, td {
-  vertical-align: top;
-  text-align: left;
-  padding: 0.5em;
-  border-top: 2px solid white;
+@media (min-width: 768px) {
+  .projects th, td {
+    vertical-align: top;
+    text-align: left;
+    padding: 0.5em;
+    border-top: 2px solid white;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects th, td {
+    text-align: left;
+    padding: 0.5em;
+    display: block;
+  }
+
+  td:first-child { border-top: 2px solid white; }
 }
 
 .bookmark {

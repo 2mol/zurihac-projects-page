@@ -5287,21 +5287,21 @@ var author$project$Main$tableConfig = billstclair$elm_sortable_table$Table$custo
 				author$project$Main$infoColumn,
 				A2(
 				billstclair$elm_sortable_table$Table$stringColumn,
-				'Level',
-				A2(
-					elm$core$Basics$composeR,
-					elm$core$Tuple$second,
-					function ($) {
-						return $.ax;
-					})),
-				A2(
-				billstclair$elm_sortable_table$Table$stringColumn,
 				'Contact',
 				A2(
 					elm$core$Basics$composeR,
 					elm$core$Tuple$second,
 					function ($) {
 						return $.aw;
+					})),
+				A2(
+				billstclair$elm_sortable_table$Table$stringColumn,
+				'Level',
+				A2(
+					elm$core$Basics$composeR,
+					elm$core$Tuple$second,
+					function ($) {
+						return $.ax;
 					}))
 			]),
 		ay: _Utils_update(
