@@ -1,17 +1,22 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Html exposing (Attribute, Html, a, div, text)
 import Html.Attributes as HtmlA exposing (class, href)
 import Html.Events exposing (onClick)
+import Json.Decode as Decode exposing (Decoder, Value)
+import Json.Encode as Encode
 import Projects exposing (..)
 import Set exposing (Set)
 import Table exposing (defaultCustomizations)
 
 
+port save : Value -> Cmd msg
+
+
 main =
     Browser.element
-        { init = \() -> init
+        { init = init
         , update = update
         , view = view
         , subscriptions = \_ -> Sub.none
@@ -25,12 +30,17 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+idsDecoder : Decoder (List Int)
+idsDecoder =
+    Decode.list Decode.int
+
+
+init : List Int -> ( Model, Cmd Msg )
+init selectedProjects =
     let
         model =
             { projects = projects
-            , selectedProjects = Set.empty
+            , selectedProjects = Set.fromList selectedProjects
             , tableState = Table.initialSort "Name"
             }
     in
@@ -53,9 +63,14 @@ update msg ({ selectedProjects } as model) =
 
                     else
                         Set.insert id selectedProjects
+
+                cmd =
+                    Set.toList newSelectedProjects
+                        |> Encode.list Encode.int
+                        |> save
             in
             ( { model | selectedProjects = newSelectedProjects }
-            , Cmd.none
+            , cmd
             )
 
         SetTableState newState ->

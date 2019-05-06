@@ -4844,14 +4844,6 @@ var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var elm$core$Set$Set_elm_builtin = elm$core$Basics$identity;
 var elm$core$Set$empty = elm$core$Dict$empty;
-var author$project$Main$init = function () {
-	var model = {
-		R: author$project$Projects$projects,
-		C: elm$core$Set$empty,
-		J: billstclair$elm_sortable_table$Table$initialSort('Name')
-	};
-	return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-}();
 var elm$core$Dict$Black = 1;
 var elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
@@ -4966,6 +4958,18 @@ var elm$core$Set$insert = F2(
 		var dict = _n0;
 		return A3(elm$core$Dict$insert, key, 0, dict);
 	});
+var elm$core$Set$fromList = function (list) {
+	return A3(elm$core$List$foldl, elm$core$Set$insert, elm$core$Set$empty, list);
+};
+var author$project$Main$init = function (selectedProjects) {
+	var model = {
+		R: author$project$Projects$projects,
+		C: elm$core$Set$fromList(selectedProjects),
+		J: billstclair$elm_sortable_table$Table$initialSort('Name')
+	};
+	return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+};
+var author$project$Main$save = _Platform_outgoingPort('save', elm$core$Basics$identity);
 var elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
@@ -5378,17 +5382,32 @@ var elm$core$Set$remove = F2(
 		var dict = _n0;
 		return A2(elm$core$Dict$remove, key, dict);
 	});
+var elm$json$Json$Encode$int = _Json_wrap;
+var elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(0),
+				entries));
+	});
 var author$project$Main$update = F2(
 	function (msg, model) {
 		var selectedProjects = model.C;
 		if (!msg.$) {
 			var id = msg.a;
 			var newSelectedProjects = A2(elm$core$Set$member, id, selectedProjects) ? A2(elm$core$Set$remove, id, selectedProjects) : A2(elm$core$Set$insert, id, selectedProjects);
+			var cmd = author$project$Main$save(
+				A2(
+					elm$json$Json$Encode$list,
+					elm$json$Json$Encode$int,
+					elm$core$Set$toList(newSelectedProjects)));
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{C: newSelectedProjects}),
-				elm$core$Platform$Cmd$none);
+				cmd);
 		} else {
 			var newState = msg.a;
 			return _Utils_Tuple2(
@@ -6290,16 +6309,16 @@ var elm$url$Url$fromString = function (str) {
 var elm$browser$Browser$element = _Browser_element;
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
+var elm$json$Json$Decode$int = _Json_decodeInt;
+var elm$json$Json$Decode$list = _Json_decodeList;
 var author$project$Main$main = elm$browser$Browser$element(
 	{
-		aG: function (_n0) {
-			return author$project$Main$init;
-		},
-		aO: function (_n1) {
+		aG: author$project$Main$init,
+		aO: function (_n0) {
 			return elm$core$Platform$Sub$none;
 		},
 		aU: author$project$Main$update,
 		aW: author$project$Main$view
 	});
 _Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$succeed(0))(0)}});}(this));
+	elm$json$Json$Decode$list(elm$json$Json$Decode$int))(0)}});}(this));
