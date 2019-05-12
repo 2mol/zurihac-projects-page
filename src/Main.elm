@@ -91,11 +91,7 @@ update msg ({ selectedProjects } as model) =
             , Cmd.none
             )
 
-        GotProjects (Err bla) ->
-            let
-                blo =
-                    Debug.log "fail" bla
-            in
+        GotProjects _ ->
             ( model, Cmd.none )
 
         ToggleSelected id ->

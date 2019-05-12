@@ -5924,7 +5924,6 @@ var author$project$Main$init = function (selectedProjects) {
 	return _Utils_Tuple2(model, author$project$Main$readProjects);
 };
 var author$project$Main$save = _Platform_outgoingPort('save', elm$core$Basics$identity);
-var elm$core$Debug$log = _Debug_log;
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var elm$core$Dict$member = F2(
@@ -5970,8 +5969,6 @@ var author$project$Main$update = F2(
 							{projects: projects}),
 						elm$core$Platform$Cmd$none);
 				} else {
-					var bla = msg.a.a;
-					var blo = A2(elm$core$Debug$log, 'fail', bla);
 					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 				}
 			case 'ToggleSelected':
