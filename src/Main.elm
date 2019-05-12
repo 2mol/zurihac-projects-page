@@ -4,9 +4,10 @@ import Browser
 import Html exposing (Attribute, Html, a, div, text)
 import Html.Attributes as HtmlA exposing (class, href)
 import Html.Events exposing (onClick)
+import Http
 import Json.Decode as Decode exposing (Decoder, Value)
+import Json.Decode.Pipeline as P
 import Json.Encode as Encode
-import Projects exposing (..)
 import Set exposing (Set)
 import Table exposing (defaultCustomizations)
 
@@ -30,6 +31,35 @@ type alias Model =
     }
 
 
+type alias Project =
+    { id : Int
+    , name : String
+    , link : String
+    , contributorLevel : String
+    , contact : String
+    , description : String
+    }
+
+
+readProjects : Cmd Msg
+readProjects =
+    Http.get
+        { url = "./projects.json"
+        , expect = Http.expectJson GotProjects (Decode.list projectDecoder)
+        }
+
+
+projectDecoder : Decoder Project
+projectDecoder =
+    Decode.succeed Project
+        |> P.required "id" Decode.int
+        |> P.required "name" Decode.string
+        |> P.required "link" Decode.string
+        |> P.required "contributor level" Decode.string
+        |> P.required "contact" Decode.string
+        |> P.required "description" Decode.string
+
+
 idsDecoder : Decoder (List Int)
 idsDecoder =
     Decode.list Decode.int
@@ -39,22 +69,35 @@ init : List Int -> ( Model, Cmd Msg )
 init selectedProjects =
     let
         model =
-            { projects = projects
+            { projects = []
             , selectedProjects = Set.fromList selectedProjects
             , tableState = Table.initialSort "Name"
             }
     in
-    ( model, Cmd.none )
+    ( model, readProjects )
 
 
 type Msg
     = ToggleSelected Int
     | SetTableState Table.State
+    | GotProjects (Result Http.Error (List Project))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg ({ selectedProjects } as model) =
     case msg of
+        GotProjects (Ok projects) ->
+            ( { model | projects = projects }
+            , Cmd.none
+            )
+
+        GotProjects (Err bla) ->
+            let
+                blo =
+                    Debug.log "fail" bla
+            in
+            ( model, Cmd.none )
+
         ToggleSelected id ->
             let
                 newSelectedProjects =
